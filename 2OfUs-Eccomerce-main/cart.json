@@ -1,0 +1,190 @@
+[
+  {
+    "user_id": "8",
+    "items": [
+      {
+        "id": 7,
+        "name": "Samsung Galaxy Book2 Pro 360",
+        "image": "images/laptop collection/07.png",
+        "price": 1249,
+        "discounted_price": "1249.00",
+        "discount": 0,
+        "category": "Electronics",
+        "quantity": 2,
+        "subtotal": "2498.00"
+      },
+      {
+        "id": 8,
+        "name": "HP ENVY",
+        "image": "images/laptop collection/08.png",
+        "price": 999,
+        "discounted_price": "999.00",
+        "discount": 0,
+        "category": "Electronics",
+        "quantity": 1,
+        "subtotal": "999.00"
+      },
+      {
+        "id": 9,
+        "name": "HP Spectre x360 14-inch",
+        "image": "images/laptop collection/09.png",
+        "price": 1499,
+        "discounted_price": "1499.00",
+        "discount": 0,
+        "category": "Electronics",
+        "quantity": 1,
+        "subtotal": "1499.00"
+      },
+      {
+        "id": 10,
+        "name": "HP Omen 16 Gaming",
+        "image": "images/laptop collection/10.png",
+        "price": 1499,
+        "discounted_price": "1499.00",
+        "discount": 0,
+        "category": "Electronics",
+        "quantity": 1,
+        "subtotal": "1499.00"
+      },
+      {
+        "id": 2,
+        "name": "Apple MacBook Pro 13-inch (M2, 2022)",
+        "image": "images/laptop collection/02.png",
+        "price": 1299,
+        "discounted_price": "1299.00",
+        "discount": 0,
+        "category": "Electronics",
+        "quantity": 2,
+        "subtotal": "2598.00"
+      },
+      {
+        "id": 109,
+        "name": "Creative Pro Bundle",
+        "image": "./images/creative-pro-bundle.jpg",
+        "price": 3100,
+        "discounted_price": "2908.63",
+        "discount": "18",
+        "category": "Bundle",
+        "quantity": 1,
+        "bundle_items": [
+          {
+            "id": 4,
+            "name": "Apple MacBook Pro 16-inch (2023)",
+            "image": "images/laptop collection/04.png",
+            "price": 2499,
+            "discounted_price": "2049.18",
+            "discount": "18",
+            "category": "Electronics",
+            "quantity": 1
+          },
+          {
+            "id": 57,
+            "name": "Beats Studio Buds",
+            "image": "Images/earphones/6.jpg",
+            "price": 98.11,
+            "discounted_price": "80.45",
+            "discount": "18",
+            "category": "Audio",
+            "quantity": 1
+          },
+          {
+            "id": 65,
+            "name": "Apple Watch Ultra 2 Olive Alpine Loop",
+            "image": "images/smartwatch collection/05.png",
+            "price": 950,
+            "discounted_price": "779.00",
+            "discount": "18",
+            "category": "Wearable",
+            "quantity": 1
+          }
+        ],
+        "subtotal": "2908.63"
+      },
+      {
+        "id": 22,
+        "name": "Samsung Galaxy A54 5G",
+        "image": "images/mobile collection/10.png",
+        "price": 449,
+        "discounted_price": "449.00",
+        "discount": 0,
+        "category": "Electronics",
+        "quantity": 1,
+        "subtotal": "449.00"
+      },
+      {
+        "id": 23,
+        "name": "Samsung Galaxy A34 5G",
+        "image": "images/mobile collection/11.png",
+        "price": 299,
+        "discounted_price": "299.00",
+        "discount": 0,
+        "category": "Electronics",
+        "quantity": 1,
+        "subtotal": "299.00"
+      },
+      {
+        "id": 105,
+        "name": "Apple Productivity Bundle",
+        "image": "./images/apple-productivity-bundle.jpg",
+        "price": 2199,
+        "discounted_price": "1705.44",
+        "discount": "12",
+        "category": "Bundle",
+        "quantity": 1,
+        "bundle_items": [
+          {
+            "id": 2,
+            "name": "Apple MacBook Pro 13-inch (M2, 2022)",
+            "image": "images/laptop collection/02.png",
+            "price": 1299,
+            "discounted_price": "1143.12",
+            "discount": "12",
+            "category": "Electronics",
+            "quantity": 1
+          },
+          {
+            "id": 61,
+            "name": "Apple Watch Series 9",
+            "image": "images/smartwatch collection/01.png",
+            "price": 479,
+            "discounted_price": "421.52",
+            "discount": "12",
+            "category": "Wearable",
+            "quantity": 1
+          },
+          {
+            "id": 58,
+            "name": "Apple AirPods",
+            "image": "Images/earphones/7.jpg",
+            "price": 160,
+            "discounted_price": "140.80",
+            "discount": "12",
+            "category": "Audio",
+            "quantity": 1
+          }
+        ],
+        "subtotal": "1705.44"
+      },
+      {
+        "id": 3,
+        "name": "Apple MacBook Pro 14-inch (2023)",
+        "image": "images/laptop collection/03.png",
+        "price": 1999,
+        "discounted_price": "1999.00",
+        "discount": 0,
+        "category": "Electronics",
+        "quantity": 1,
+        "subtotal": "1999.00"
+      }
+    ],
+    "summary": {
+      "total_items": 16,
+      "total_price_before_discount": "17325.11",
+      "total_discount": "871.04",
+      "total_price_after_discount": "16454.07",
+      "delivery_fee": "15.00",
+      "taxes": "17.52",
+      "final_total": "16486.59"
+    }
+  }
+]

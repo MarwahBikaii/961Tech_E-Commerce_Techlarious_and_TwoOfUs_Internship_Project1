@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SmartBox</title>
+    <link rel="stylesheet" href="./css/cart.css" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css"
+    />
+  </head>
+
+  <body>
+    <nav>
+      <div id="navbar">
+        <div id="navbar-logo">
+          <img src="../../../Images/961Tech.png" width="260" height="130" />
+        </div>
+        <div id="navbar-links">
+          <ul>
+            <li>
+              <a href="index.html">Home</a>
+            </li>
+
+            <li>
+              <a href="products.html">Products</a>
+            </li>
+          </ul>
+          <button class="blue-button">Sign Out</button>
+        </div>
+      </div>
+    </nav>
+
+    <div class="shopping-cart" id="shopping-cart"></div>
+
+    <div id="confirmationModal" class="modal">
+      <div class="modal-content">
+        <p id="modalMessage"></p>
+        <div class="modal-buttons">
+          <button id="confirmButton" class="modal-btn confirm">Confirm</button>
+          <button id="cancelButton" class="modal-btn cancel">Cancel</button>
+        </div>
+      </div>
+    </div>
+    <button id="clearCartBtn" class="blue-button">Clear Cart</button>
+
+    <script src="src/Data.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const signOutBtn = document.querySelector(".blue-button");
+
+        if (signOutBtn) {
+          signOutBtn.addEventListener("click", () => {
+            // Clear the logged-in user from localStorage
+            localStorage.removeItem("Loggedinuser");
+
+            // Optionally, you can reload the page to reflect the changes
+            location.reload();
+
+            // Or, redirect to the home page or login page
+            // window.location.href = "SignIn.html";
+          });
+        }
+      });
+      document.addEventListener("DOMContentLoaded", () => {
+        // Listen for the Clear Cart button click
+        const clearCartBtn = document.getElementById("clearCartBtn");
+
+        if (clearCartBtn) {
+          // Retrieve the logged-in user from local storage
+          const loggedInUser = localStorage.getItem("Loggedinuser");
+
+          if (loggedInUser) {
+            // Retrieve the current carts from local storage
+            const carts = JSON.parse(localStorage.getItem("cart")) || [];
+
+            // Find the logged-in user's cart
+            const userCart = carts.find(
+              (userCart) => userCart.user_id === loggedInUser
+            );
+
+            // Check if the user's cart is empty
+            if (!userCart || !userCart.items || userCart.items.length === 0) {
+              // Disable the Clear Cart button
+              clearCartBtn.disabled = true;
+            } else {
+              // Enable the Clear Cart button and set up its click event
+              clearCartBtn.disabled = false;
+              clearCartBtn.addEventListener("click", () => {
+                // Filter out the logged-in user's cart
+                const updatedCarts = carts.filter(
+                  (userCart) => userCart.user_id !== loggedInUser
+                );
+                localStorage.setItem("cart", JSON.stringify(updatedCarts));
+
+                // Show a confirmation message
+                alert("Your cart has been cleared.");
+
+                location.reload(); // Reload the page to reflect changes
+              });
+            }
+          } else {
+            // Disable the button if no user is logged in
+            clearCartBtn.disabled = true;
+            alert("No user is logged in.");
+          }
+        }
+      });
+
+      document.addEventListener("DOMContentLoaded", () => {
+        let loggedinUser = localStorage.getItem("Loggedinuser");
+
+        // Reference to the shopping cart container
+        let shoppingCart = document.getElementById("shopping-cart");
+
+        // Check if the user is not logged in
+        if (!loggedinUser) {
+          shoppingCart.innerHTML = `
+                <div class="empty-message">
+                  <h1>Your Not Logged In ! Please sign in to start shopping and add items to your cart!</h1>
+                  <a href="./SignIn.html" class="blue-button">Sign In Now</a>
+                </div>
+              `;
+          return; // Exit early since no further rendering is needed
+        }
+
+        // Your existing renderCart function logic here
+        // Call the function after rendering the cart
+        renderCart();
+        setupCheckoutButton();
+      });
+
+      document.addEventListener("DOMContentLoaded", () => {
+        document.addEventListener("scroll", () => {
+          let navBar = document.querySelector("nav");
+        });
+      });
+      // Your JavaScript code here
+      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+      let shoppingCart = document.getElementById("shopping-cart");
+      let label = document.getElementById("label");
+
+      let loggedinUser = localStorage.getItem("Loggedinuser");
+
+      const saveCart = () => localStorage.setItem("cart", JSON.stringify(cart));
+
+      const updateQuantity = (productId, change) => {
+        cart.forEach((userCart) => {
+          userCart.items.forEach((item) => {
+            if (item.id === productId) {
+              item.quantity += change;
+              if (item.quantity < 1) item.quantity = 1;
+              item.subtotal = item.discounted_price * item.quantity;
+            }
+          });
+          // Update the cart summary after modifying the cart
+          updateCartSummary(userCart);
+        });
+        saveCart();
+        renderCart();
+      };
+      let renderCart = () => {
+        if (!loggedinUser) {
+          shoppingCart.innerHTML = `<h2>Please log in to view your cart</h2>`;
+          return;
+        }
+
+        // Filter the cart for the logged-in user
+        let userCart = cart.find(
+          (userCart) => userCart.user_id === loggedinUser
+        );
+
+        if (!userCart || userCart.items.length === 0) {
+          shoppingCart.innerHTML = `<h1>Your Cart is Empty <br>Explore Our Products and Start Adding To Your Cart !</h1>`;
+          return;
+        }
+
+        shoppingCart.innerHTML = `
+        <div class="cart-container">
+          <div class="cart-items">${renderCartItems(userCart.items)}</div>
+          <div class="cart-summary">
+            <p><strong>Total Items:</strong> ${userCart.summary.total_items}</p>
+            <p><strong>Total Price (Before Discount):</strong> $${
+              userCart.summary.total_price_before_discount
+            }</p>
+            <p><strong>Total Discount:</strong> $${
+              userCart.summary.total_discount
+            }</p>
+            <p><strong>Total Price (After Discount):</strong> $${
+              userCart.summary.total_price_after_discount
+            }</p>
+            <p><strong>Delivery Fee:</strong> $${
+              userCart.summary.delivery_fee
+            }</p>
+            <p><strong>Taxes:</strong> $${userCart.summary.taxes}</p>
+            <p><strong>Final Total:</strong> $${
+              userCart.summary.final_total
+            }</p>
+            <div class="download-button-container">
+              <button id="downloadBtn" class="download-btn">Checkout</button>
+            </div>
+          </div>
+        </div>
+      `;
+      };
+      //   // Re-add event listener for the "Clear Cart" button after re-rendering
+      //   const clearCartBtn = document.getElementById("clearCartBtn");
+      //   if (clearCartBtn) {
+      //     clearCartBtn.addEventListener("click", () => {
+      //       // Clear the cart in local storage
+      //       localStorage.removeItem("cart");
+
+      //       // Clear the cart variable
+      //       cart = [];
+
+      //       // Update the UI
+      //       renderCart();
+
+      //       // Show a confirmation message
+      //       alert("Your cart has been cleared.");
+      //     });
+      //   }
+      // };
+
+      function renderCartItems(items) {
+        let bundles = {};
+
+        items.forEach((item) => {
+          if (item.bundle_items) {
+            // For bundles, create a unique identifier for each bundle
+            let bundleName = `${item.name}`;
+            if (!bundles[bundleName]) bundles[bundleName] = [];
+
+            // Loop through each product in the bundle and add them to the bundle group
+            item.bundle_items.forEach((bundleProduct) => {
+              let productKey = `Product-${bundleProduct.id}`;
+              bundles[bundleName].push(bundleProduct);
+            });
+          } else {
+            // For individual products, just add them as usual
+            let productKey = `Product-${item.id}`;
+            if (!bundles[productKey]) bundles[productKey] = [];
+            bundles[productKey].push(item);
+          }
+        });
+
+        let htmlContent = "";
+        // Loop through each bundle or individual product group
+        for (let group in bundles) {
+          console.log(group);
+          htmlContent += `<div class="cart-group">
+                  <h2>${group.includes("Bundle") ? `🛒 ${group}` : ""}</h2>`;
+
+          // If it's a bundle, remove the quantity buttons and add a delete bundle button
+          if (group.includes("Bundle")) {
+            htmlContent += `
+                    <div class="bundle-details">
+                      ${bundles[group]
+                        .map(
+                          (item) => `
+                            <div class="cart-item">
+                              <div class="cart-item-details">
+                        <img src="${item.image}" alt="${item.name}" class="cart-item-image" />
+
+                                <p><strong>${item.name}</strong></p>
+                                <p>Price: $${item.price} | Discounted Price: $${item.discounted_price}</p>
+                                <p>Discount: $${item.discount}</p>
+                              </div>
+                            </div>`
+                        )
+                        .join("")}
+                    </div>
+              <button onclick="removeBundle('${group}')" class="remove-bundle-btn">Remove Bundle</button>`;
+          } else {
+            // For individual products, render normally with quantity controls and remove button
+            htmlContent += bundles[group]
+              .map(
+                (item) => `
+                      <div class="cart-item">
+                        <div class="cart-item-details">
+                        <img src="${item.image}" alt="${item.name}" class="cart-item-image" />
+
+
+                          <p><strong>${item.name}</strong></p>
+                          <p>Price: $${item.price} | Discounted Price: $${item.discounted_price}</p>
+                          <p>Discount: $${item.discount}</p>
+                        </div>
+                        <div class="cart-item-quantity">
+                          <p>Quantity:
+                            <button onclick="updateQuantity(${item.id}, -1)" class="quantity-btn">-</button>
+                            ${item.quantity}
+                            <button onclick="updateQuantity(${item.id}, 1)" class="quantity-btn">+</button>
+                          </p>
+                        </div>
+                        <div class="cart-item-subtotal">
+                          <p>Subtotal: $${item.subtotal}</p>
+                        </div>
+                        <div class="remove-bundle-btn-container">
+                        <button onclick="removeProduct(${item.id})" class="remove-product-btn">Remove Product</button>
+                    </div>  </div>`
+              )
+              .join("");
+          }
+          htmlContent += `</div>`; // Close the group
+        }
+
+        return htmlContent;
+      }
+
+      renderCart();
+
+      let productToRemove = null;
+      let bundleToRemove = null;
+
+      const showModal = (message, onConfirm, onCancel) => {
+        const modal = document.getElementById("confirmationModal");
+        const modalMessage = document.getElementById("modalMessage");
+        const confirmButton = document.getElementById("confirmButton");
+        const cancelButton = document.getElementById("cancelButton");
+
+        modalMessage.textContent = message;
+        modal.style.display = "flex";
+
+        // Confirm action
+        confirmButton.onclick = () => {
+          modal.style.display = "none";
+          if (onConfirm) onConfirm();
+        };
+
+        // Cancel action
+        cancelButton.onclick = () => {
+          modal.style.display = "none";
+          if (onCancel) onCancel();
+        };
+      };
+
+      const removeProduct = (productId) => {
+        productToRemove = productId;
+        showModal(
+          "Are you sure you want to remove this product?",
+          () => {
+            cart.forEach((userCart) => {
+              userCart.items = userCart.items.filter(
+                (item) => item.id !== productToRemove
+              );
+              updateCartSummary(userCart);
+            });
+            cart = cart.filter((userCart) => userCart.items.length > 0);
+            saveCart();
+            renderCart();
+          },
+          () => {
+            productToRemove = null; // Reset the temporary variable
+          }
+        );
+      };
+
+      const removeBundle = (bundleName) => {
+        bundleToRemove = bundleName;
+        showModal(
+          "Are you sure you want to remove this bundle?",
+          () => {
+            cart.forEach((userCart) => {
+              userCart.items = userCart.items.filter((item) => {
+                return !(item.bundle_items && item.name === bundleToRemove);
+              });
+              updateCartSummary(userCart);
+            });
+            cart = cart.filter((userCart) => userCart.items.length > 0);
+            saveCart();
+            renderCart();
+          },
+          () => {
+            bundleToRemove = null; // Reset the temporary variable
+          }
+        );
+      };
+
+      // Function to download the cart as a JSON file
+      // document
+      //   .getElementById("downloadBtn")
+      //   .addEventListener("click", function () {
+      //     const blob = new Blob([JSON.stringify(cart, null, 2)], {
+      //       type: "application/json",
+      //     });
+      //     const link = document.createElement("a");
+      //     link.href = URL.createObjectURL(blob);
+      //     link.download = "cart.json";
+      //     link.click();
+      //   });
+      // Setup checkout functionality
+      function setupCheckoutButton() {
+        const downloadBtn = document.getElementById("downloadBtn");
+
+        if (downloadBtn) {
+          downloadBtn.addEventListener("click", function () {
+            // Get the current cart from localStorage
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+            // Loop through the cart items and update the product quantities in localStorage
+            cart.forEach((userCart) => {
+              userCart.items.forEach((item) => {
+                let products =
+                  JSON.parse(localStorage.getItem("products")) || [];
+                let product = products.find((p) => p.id === item.id);
+
+                // If the product exists, update its quantity
+                if (product) {
+                  // Reduce the quantity of the product in local storage by the quantity in the cart
+                  product.quantity -= item.quantity;
+
+                  // Make sure the product quantity doesn't go below 0
+                  if (product.quantity < 0) product.quantity = 0;
+
+                  // Update the products array in local storage
+                  localStorage.setItem("products", JSON.stringify(products));
+                }
+              });
+            });
+
+            // Clear the logged-in user's cart after checkout
+            cart = cart.filter((userCart) => userCart.user_id !== loggedinUser);
+            localStorage.setItem("cart", JSON.stringify(cart));
+            alert("Checkout successful! Your cart has been cleared.");
+
+            // Reload the page to reflect the updated cart state
+            location.reload();
+
+            // Create and download cart.json file
+            const cartBlob = new Blob([JSON.stringify(cart, null, 2)], {
+              type: "application/json",
+            });
+            const cartLink = document.createElement("a");
+            cartLink.href = URL.createObjectURL(cartBlob);
+            cartLink.download = "cart.json"; // Cart file download
+            cartLink.click();
+
+            downloadUpdatedProducts();
+            window.location.href = "Checkout.html";
+          });
+        }
+      }
+
+      // Function to download updated products.json from local storage
+      function downloadUpdatedProducts() {
+        let products = JSON.parse(localStorage.getItem("products")) || [];
+
+        // Create a Blob from the updated products array
+        const blob = new Blob([JSON.stringify(products, null, 2)], {
+          type: "application/json",
+        });
+
+        // Create an anchor element and trigger the download
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = "products.json"; // Set the filename as "products.json"
+        link.click();
+      }
+
+      function updateCartSummary(userCart) {
+        let totalItems = 0;
+        let totalPriceBeforeDiscount = 0;
+        let totalDiscount = 0;
+        let totalPriceAfterDiscount = 0;
+        const deliveryFee = 15.0;
+        const taxes = 17.52;
+
+        userCart.items.forEach((item) => {
+          const itemQuantity = item.bundle_items
+            ? item.bundle_items.length * item.quantity
+            : item.quantity;
+          const itemPriceBeforeDiscount = item.bundle_items
+            ? item.bundle_items.reduce(
+                (sum, p) => sum + p.price * item.quantity,
+                0
+              )
+            : item.price * item.quantity;
+          const itemDiscount = item.bundle_items
+            ? item.bundle_items.reduce(
+                (sum, p) =>
+                  sum +
+                  ((p.price * (parseFloat(p.discount) || 0)) / 100) *
+                    item.quantity,
+                0
+              )
+            : ((item.price * (parseFloat(item.discount) || 0)) / 100) *
+              item.quantity;
+          const itemPriceAfterDiscount = parseFloat(item.subtotal);
+
+          totalItems += itemQuantity;
+          totalPriceBeforeDiscount += itemPriceBeforeDiscount;
+          totalDiscount += itemDiscount;
+          totalPriceAfterDiscount += itemPriceAfterDiscount;
+        });
+
+        const finalTotal = totalPriceAfterDiscount + deliveryFee + taxes;
+
+        userCart.summary = {
+          total_items: totalItems,
+          total_price_before_discount: totalPriceBeforeDiscount.toFixed(2),
+          total_discount: totalDiscount.toFixed(2),
+          total_price_after_discount: totalPriceAfterDiscount.toFixed(2),
+          delivery_fee: deliveryFee.toFixed(2),
+          taxes: taxes.toFixed(2),
+          final_total: finalTotal.toFixed(2),
+        };
+      }
+    </script>
+
+    <style></style>
+  </body>
+</html>

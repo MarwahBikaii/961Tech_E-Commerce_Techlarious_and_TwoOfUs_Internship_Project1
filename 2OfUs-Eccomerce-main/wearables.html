@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <link href="./css/headphones.css" rel="stylesheet">
+    <link href="./css/productandrecommendation.css" rel="stylesheet">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>let shop = document.getElementById("shop");
+      let productsData = []; // To store fetched product data
+      let cart = JSON.parse(localStorage.getItem('cart')) || [];
+      
+      localStorage.setItem("Loggedinuser",5);
+      document.addEventListener("DOMContentLoaded", () => {
+        // NAVIGATION SCROLLING EFFECT
+
+        let navBar = document.querySelector("nav");
+        navScroll(false);
+
+        document.addEventListener("scroll", () => {
+          navScroll(false);
+        });
+
+        function navScroll(result) {
+          // result = if the user is currently viewing the menu page
+          if (window.scrollY > 0 && !result) {
+            navBar.style.boxShadow = "0 5px 20px rgba(190, 190, 190, 0.15)";
+            navBar.style.backgroundColor = " #edf2fb";
+          } else {
+            navBar.style.boxShadow = "none";
+            navBar.style.backgroundColor = "#edf2fb";
+          }
+        }
+
+        // MENU BAR
+
+        let menuBar = document.querySelector("#menu-bar");
+        let menuPage = document.querySelector("#menu-page");
+        let html = document.querySelector("html");
+
+        // Determine Screen Device: Desktop or Mobile
+        let menuBarStyle = window.getComputedStyle(menuBar);
+        let screenType = "";
+
+        if (menuBarStyle.display === "flex") {
+          screenType = "mobile";
+        } else if (menuBarStyle.display === "none") {
+          screenType = "desktop";
+        } else {
+          console.log("Error: Failed to identify screen type", screenType);
+        }
+
+        // Show/Hide Menu Page
+
+        menuBar.addEventListener("click", () => {
+          menuPage.classList.toggle("active");
+
+          html.style.overflow = menuPage.classList.contains("active")
+            ? "hidden"
+            : "scroll";
+          navScroll(menuPage.classList.contains("active"));
+        });
+
+        // PRODUCT CARDS DISPLAY
+
+        let productContainerWidth = document.querySelector(
+          ".product-cards-container"
+        ).offsetWidth;
+
+        let rootStyles = getComputedStyle(html);
+        let productCardWidth;
+        let productCards;
+
+        if (screenType === "desktop") {
+          productCardWidth = parseInt(
+            rootStyles
+              .getPropertyValue("--product-card-width")
+              .replace("px", "")
+          );
+          productCardsPerRow = Math.floor(
+            productContainerWidth / (productCardWidth + 5)
+          );
+        } else if (screenType === "mobile") {
+          productCardsPerRow = html.offsetWidth > 430 ? 3 : 2;
+          productCardWidth = Math.floor(
+            productContainerWidth / productCardsPerRow - 10
+          );
+        } else {
+          console.log(
+            "Error: Failed to set productCardsPerRow & productCardWidth"
+          );
+        }
+
+        let marginSpacing =
+          (productContainerWidth - productCardsPerRow * productCardWidth) /
+          (productCardsPerRow - 1);
+        let lastElement = productCardsPerRow - 1;
+
+        let sectionLastElement = [];
+        let productSections = document.querySelectorAll(".product-section");
+        productSections.forEach((section) => {
+          productCards = section.querySelectorAll(".product-card");
+
+          for (let i = 0; i < productCardsPerRow; i++) {
+            productCards[i].classList.add("active");
+
+            if (i === lastElement) {
+              productCards[i].style.marginRight = "0px";
+            } else {
+              productCards[i].style.marginRight = `${marginSpacing}px`;
+            }
+          }
+
+          sectionLastElement[section.id] = lastElement;
+        });
+
+
+
+        // SLIDESHOW
+
+        let slideshowButtons = document.querySelectorAll(".slideshow-button");
+        slideshowButtons.forEach((button) => {
+          button.addEventListener("click", () => {
+            let slideshowSection = button.parentElement.dataset.slideshow;
+            let slideshowContainer = document.querySelector(
+              `#product-section-${slideshowSection}`
+            );
+            let productCards =
+              slideshowContainer.querySelectorAll(".product-card");
+
+            let currentSection = `product-section-${slideshowSection}`;
+            if (button.classList.contains("prev-button")) {
+              if (
+                sectionLastElement[currentSection] <=
+                productCardsPerRow - 1
+              ) {
+                sectionLastElement[currentSection] = productCards.length - 1;
+              } else {
+                sectionLastElement[currentSection]--;
+              }
+            } else if (button.classList.contains("next-button")) {
+              if (
+                sectionLastElement[currentSection] ===
+                productCards.length - 1
+              ) {
+                sectionLastElement[currentSection] = productCardsPerRow - 1;
+              } else {
+                sectionLastElement[currentSection]++;
+              }
+            } else {
+              console.log("Slideshow: Error occurred");
+            }
+
+            for (let i = 0; i < productCards.length; i++) {
+              if (
+                i <= sectionLastElement[currentSection] &&
+                i >=
+                  sectionLastElement[currentSection] - (productCardsPerRow - 1)
+              ) {
+                productCards[i].classList.add("active");
+
+                if (i === sectionLastElement[currentSection]) {
+                  productCards[i].style.marginRight = "0px";
+                } else {
+                  productCards[i].style.marginRight = `${marginSpacing}px`;
+                }
+              } else {
+                productCards[i].classList.remove("active");
+                productCards[i].style.marginRight = "0px";
+              }
+            }
+          });
+        });
+      });
+    </script>
+  </head>
+  </head>
+  <body>
+    <nav>
+      <div id="navbar">
+        <div id="navbar-logo">
+          <img
+            src="./images/961Tech.png"
+            alt="961Tech, Company Ecommerce Logo"
+            width="300"
+            height="20"
+          />
+        </div>
+        <div id="menu-bar">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="currentColor"
+            class="bi bi-list"
+            viewBox="0 0 16 16"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"
+            />
+          </svg>
+        </div>
+        <div id="navbar-links">
+          <ul>
+            <li>
+              <a href="index.html"> Home </a>
+            </li>
+            <li>
+              <a href="products.html"> Products </a>
+              <ul class=" dropdown">
+                <li><a href="electronics.html">Electronics</a></li>
+                <li><a href="audio.html">Audio</a></li>
+                <li><a href="wearables.html">Wearables</a></li>
+                <li><a href="accessories.html">Accessories</a></li>
+
+            </ul>
+            </li>
+            
+            <li>
+              <a href="index.html"> About </a>
+            </li>
+          </ul>
+
+          <div class="search">
+            <label for="search">Search:</label>
+            <input type="search" id="search" name="search" placeholder="Search here...">
+        </div>
+
+        
+        
+        
+      </div>
+    </nav>        
+    <div id="product-top-container">
+      <div id="product-top-wrapper">
+        <div id="product-top-text-section">
+          <h2>Welcome to 961Tech</h2>
+
+          <h1>
+            <span class="blue-line"></span>Discover Our Exclusive Bundle
+            Offerings
+          </h1>
+
+          <p>
+            Explore our limited edition bundles and special offers. Browse
+            through our handpicked selection of premium products, and grab
+            them before they're gone.
+          </p>
+        
+        </div>
+        <div id="product-top-image-section">
+          <img
+            src="Images/961tech Images/homepage/watch.png"
+            alt="Exclusive Product"
+          />
+        </div>
+      </div>
+    </div>
+    <div id="productModal" class="modal">
+      <div class="modal-content" id="modal">
+        <span class="close-btn">&times;</span>
+        <h2 id="modalProductName"></h2>
+        <img id="modalProductImage" src="" alt="Product Image">
+        <p id="modalProductDescription"></p>
+        <h4 id="modalProductPrice"></h4>
+        <p id="modalProductCategory"></p>
+        <p id="modalProductRating"></p>
+        <button id="addToCartBtn" class="blue-button">Add To Cart</button>
+       
+        <div id="recommendation-section" class="recommendation-section">
+        
+          <div class="shop" id="shop"></div>
+        </div>
+      </div>
+    </div>
+
+    
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const storedProducts = localStorage.getItem("products");
+      
+        if (storedProducts) {
+          const products = JSON.parse(storedProducts);
+          const electronicsProducts = products.filter(
+            (product) => product.category.toLowerCase() === "wearable"
+          );
+          displayProducts(electronicsProducts);
+      
+          // Attach event listeners for rating inputs
+          attachRatingListeners(products);
+        } else {
+          fetch("products.json")
+            .then((response) => response.json())
+            .then((products) => {
+              localStorage.setItem("products", JSON.stringify(products));
+              const electronicsProducts = products.filter(
+                (product) => product.category.toLowerCase() === "wearable"
+              );
+              displayProducts(electronicsProducts);
+      
+              // Attach event listeners for rating inputs
+              attachRatingListeners(products);
+            })
+            .catch((error) => console.log("Error fetching products:", error));
+        }
+      
+        function attachRatingListeners(products) {
+          const ratingInputs = document.querySelectorAll('input[name="rate_product"]');
+          ratingInputs.forEach((input) => {
+            input.addEventListener("input", (event) => {
+              const productId = input.id.split("-")[1]; // Extract product ID from input ID
+              const newRating = parseFloat(event.target.value);
+      
+              // Update product rating in the products array
+              const productIndex = products.findIndex((p) => p.id == productId);
+              if (productIndex > -1) {
+                products[productIndex].rating = newRating;
+      
+                // Update the local storage with the new rating
+                localStorage.setItem("products", JSON.stringify(products));
+                console.log(
+                  `Updated rating for product ID ${productId} to ${newRating}`
+                );
+              }
+            });
+          });
+        }
+      });
+      
+      function displayProducts(products) {
+        const productContainer = document.querySelector("#product-list"); // Assuming there's a div to hold the products
+        productContainer.innerHTML = ""; // Clear existing content
+      
+        products.forEach((product) => {
+          const productDiv = document.createElement("div");
+          productDiv.classList.add("product");
+          productDiv.innerHTML = `
+            <div class="image_product">
+              <img src="${product.image}" alt="${product.name}">
+            </div>
+            <div class="name_product">
+              <h3>${product.name}</h3>
+            </div> 
+            <div class="desc_product">
+              <p>${product.description}</p>
+            </div>
+            <div class="price_product">
+              <h4>${product.price}$</h4>
+            </div>
+            <p>Category: ${product.category} | ⭐ ${product.rating}</p>
+            <div class="rating">
+              ${[5, 4, 3, 2, 1]
+                .map(
+                  (star) => `
+                  <input type="radio" id="star${star}-${product.id}" name="rating-${product.id}" value="${star}" ${
+                    product.rating === star ? "checked" : ""
+                  }>
+                  <label for="star${star}-${product.id}" title="${star} stars">★</label>
+                `
+                )
+                .join("")}
+            </div>
+          
+          `;
+      
+          // Adding a click event to open the modal when product is clicked
+          productDiv.addEventListener("click", (event) => {
+            // Ensure the click is not on the "Add to Cart" button
+            if (!event.target.closest(".add_to_cart")) {
+              openProductModal(product); // open the modal with product details
+            }
+          });
+      
+          // Add event listener for rating input change to store in local storage
+          const ratingInputs = productDiv.querySelectorAll(`input[name="rating-${product.id}"]`);
+          ratingInputs.forEach((input) => {
+            input.addEventListener("change", (event) => {
+              const selectedRating = event.target.value;
+              localStorage.setItem(`product-rating-${product.id}`, selectedRating);
+              console.log(`Saved rating for product ${product.id}: ${selectedRating}`);
+            });
+          });
+      
+          productContainer.appendChild(productDiv);
+        });
+      }
+
+      
+function openProductModal(product) {
+  const modal = document.getElementById("productModal");
+  
+  // Populate modal content
+  document.getElementById("modalProductName").textContent = product.name;
+  document.getElementById("modalProductImage").src = product.image;
+  document.getElementById("modalProductDescription").textContent = product.description;
+  document.getElementById("modalProductPrice").textContent = `${product.price}$`;
+  document.getElementById("modalProductCategory").textContent = `Category: ${product.category}`;
+  document.getElementById("modalProductRating").textContent = `⭐ ${product.rating}`;
+
+  // Add "Add to Cart" button dynamically inside the modal
+  const addToCartButton = document.getElementById("addToCartBtn");
+  addToCartButton.setAttribute("onclick", `addToCart(${product.id})`);
+
+  // Show the modal
+  modal.style.display = "flex";
+
+  // Add event listener to close the modal
+  const closeButton = document.querySelector(".close-btn");
+  closeButton.addEventListener("click", () => {
+    modal.style.display = "none";
+  });
+
+  // Optional: Close modal when clicking outside of it
+  window.addEventListener("click", (event) => {
+    if (event.target === modal) {
+      modal.style.display = "none";
+    }
+  });
+
+  fetch("products.json")
+    .then((response) => response.json())
+    .then((data) => {
+      // Filter products to only include those with quantity > 0
+      productsData = data.filter((product) => product.quantity > 0);   
+      generateShop(product,productsData);
+    })
+    .catch((error) => console.error("Error fetching products.json:", error));
+
+  console.log(product.id);
+  console.log(product);
+
+}
+
+  let generateShop = (product,productsData) => {
+
+    const shop = document.getElementById("shop");
+if (!shop) {
+    console.error("Shop container not found!");
+    return;
+}
+
+    console.log(product.id);
+  console.log(product);
+
+    let selectedProductId = product.id; 
+    let relatedBundles = [];
+  
+    // Find bundles that contain the selected product
+    relatedBundles = productsData.filter((product) => {
+      return product.bundle_items && product.bundle_items.includes(selectedProductId);
+    });
+  
+    // Find all products that are in the same bundles as product ID 1
+    let allProductsInBundles = [];
+    productsData.forEach((product) => {
+      if (product.bundle_items && product.bundle_items.includes(selectedProductId)) {
+        // Add the product and its items to the list
+        allProductsInBundles.push(product);
+        // Include the products in the bundle as well
+        product.bundle_items.forEach((bundleProductId) => {
+          let relatedProduct = productsData.find((prod) => prod.id === bundleProductId);
+          if (relatedProduct && !allProductsInBundles.includes(relatedProduct)) {
+            allProductsInBundles.push(relatedProduct);
+          }
+        });
+      }
+    }); // Check if there are related products to display the header
+    if (allProductsInBundles.length > 0) {
+    // Insert the header before the products
+    shop.innerHTML = `<br>
+      <h1 class="recommendationheader">
+       Our Recommended Products
+      </h1><br>
+    `;
+  }
+
+  
+    // Generate the products (including bundles) cards
+  shop.innerHTML += allProductsInBundles
+      .map((product) => {
+        let {
+          id,
+          name,
+          price,
+          description,
+          image,
+          bundle_items,
+          discount,
+          category,
+          rating,
+        } = product;
+  
+        let finalPrice = price; // Base price for individual products
+        let originalPrice = price; // Original price before discount
+
+        // If the product is part of a bundle, calculate the total price of the bundle
+        if (bundle_items) {
+          let totalBundlePrice = 0;
+          let originalBundlePrice = 0; // Original price before discount
+  
+          bundle_items.forEach((bundleItemId) => {
+            let bundleProduct = productsData.find((prod) => prod.id === bundleItemId);
+            if (bundleProduct) {
+              // Apply discount to each product in the bundle and sum the prices
+              originalBundlePrice += bundleProduct.price;
+
+              let discountedPrice = (bundleProduct.price * (1 - parseInt(discount) / 100)).toFixed(2);
+              totalBundlePrice += parseFloat(discountedPrice);
+            }
+          });
+          finalPrice = totalBundlePrice.toFixed(2); // Sum of all discounted prices in the bundle
+          originalPrice = originalBundlePrice.toFixed(2); // Sum of all original prices in the bundle
+
+        }
+  
+        return `
+        <div class="product-cards-container">
+          <div id="product-id-${id}" class="item product-card">
+                 ${product.is_bundle ? `
+        <div class="product-image-container bundle-images">
+          ${bundle_items.map(itemId => {
+            const includedProduct = productsData.find(p => p.id === itemId);
+            return includedProduct
+              ? `<img width="20" height="20" src="${includedProduct.image}" alt="${includedProduct.name}" title="${includedProduct.name}" />`
+              : "";
+          }).join("")}
+        </div>` : `
+        <div class="product-image-container">
+          <img width="220" src="${image}" alt="${name}" />
+        </div>`}
+            <div class="details product-text-container">
+              <h3>${name} ${bundle_items ? "<span class='bundle-badge'>Bundle</span>" : ""}</h3>
+              ${product.is_bundle ? `
+                <p>${bundle_items.map(itemId => {
+                  const includedProduct = productsData.find(p => p.id === itemId);
+                  return includedProduct ? includedProduct.name : '';
+                }).join(', ')}</p>
+              ` : `
+              `}
+                            <p>Category: ${category} | ⭐ ${rating}</p>
+                            <div class="pricediv">
+
+              <div class="price-quantity">
+              ${product.is_bundle ? `
+                <h2>
+                  <span class="original-price">$${originalPrice}</span> 
+                  <span class="final-price">$${finalPrice}</span> 
+                  <span class="discount discount-badge">${discount}% OFF on each product</span>
+                </h2>
+              ` : `<h2>$${finalPrice}</h2>`}
+            </div> </div>
+              <div class="buttons">
+                ${
+                  bundle_items
+                  ? `<button 
+                      class="add-To-Cart" 
+                      onclick="addToCart(${id})" 
+                      id="bundleadd-btn-${id}" 
+                      ${isItemInCart(id) ? "disabled" : ""}>
+                      Add Bundle
+                    </button>`
+                  : `<button class="add-To-Cart" onclick="addToCart(${id})">Add to Cart</button>`
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+      
+      })
+      .join("");
+  };
+  
+
+  function isItemInCart(id) {
+    const LoggedInUser = localStorage.getItem("Loggedinuser");
+    const userCart = cart.find((c) => c.user_id === LoggedInUser);
+    return userCart?.items.some((item) => item.id === id) || false;
+  }
+    
+        // Search functionality for products
+        document.getElementById("search").addEventListener("input", function () {
+          const query = this.value.toLowerCase();
+          const products = document.querySelectorAll(".product");
+    
+          products.forEach((product) => {
+            const name = product.querySelector(".name_product h3").textContent.toLowerCase();
+            const description = product.querySelector(".desc_product p").textContent.toLowerCase();
+    
+            if (name.includes(query) || description.includes(query)) {
+              product.style.display = "block";
+            } else {
+              product.style.display = "none";
+            }
+          });
+        });
+// Function to show the login modal
+function showLoginModal() {
+  const modal = document.getElementById("loginModal");
+  const signInButton = document.getElementById("signInButton");
+  const cancelButton = document.getElementById("cancelButton");
+
+  // Show the modal
+  modal.style.display = "flex";
+
+  // Redirect to index.html when "Sign In" button is clicked
+  signInButton.addEventListener("click", function () {
+    window.location.href = "./index.html";
+  });
+
+  // Close the modal when "Cancel" button is clicked
+  cancelButton.addEventListener("click", function () {
+    modal.style.display = "none";
+  });
+}
+
+function addToCart(id) {
+  const LoggedInUser = localStorage.getItem("Loggedinuser");
+ 
+  if (!localStorage.getItem("Loggedinuser")){
+    alert("You need to be logged in before adding to your cart!")
+    ;
+    return
+  }
+
+  // Find the product by its ID
+  const product = productsData.find((p) => p.id === id);
+  if (!product) {
+    console.error("Product not found!");
+    return;
+  }
+
+  // Retrieve the existing cart from localStorage
+  const existingCart = localStorage.getItem("cart");
+  let cart = existingCart ? JSON.parse(existingCart) : [];
+
+  // Check if the user has a cart
+  let userCart = cart.find((c) => c.user_id === LoggedInUser);
+  if (!userCart) {
+    userCart = {
+      user_id: LoggedInUser,
+      items: [],
+      summary: {
+        total_items: 0,
+        total_price_before_discount: 0,
+        total_discount: 0,
+        total_price_after_discount: 0,
+        delivery_fee: 15.0,
+        taxes: 17.52,
+        final_total: 0,
+      },
+    };
+    cart.push(userCart);
+  }
+  if (product.is_bundle) {
+    // Handle bundle products
+    let bundleProducts = [];
+    let totalBundlePrice = 0;
+  
+    product.bundle_items.forEach((bundleItemId) => {
+      const bundleProduct = productsData.find((prod) => prod.id === bundleItemId);
+      if (bundleProduct) {
+        const discountedPrice = bundleProduct.price * (1 - parseInt(product.discount) / 100);
+        totalBundlePrice += discountedPrice;
+  
+        // Push the individual product with its own image
+        bundleProducts.push({
+          id: bundleProduct.id,
+          name: bundleProduct.name,
+          image: bundleProduct.image, // Use individual product's image
+          price: bundleProduct.price,
+          discounted_price: discountedPrice.toFixed(2),
+          discount: product.discount,
+          category: bundleProduct.category,
+          quantity: 1,
+        });
+      }
+    });
+  
+    const bundleEntry = {
+      id: product.id,
+      name: product.name,
+      image: product.image, // Keep the bundle's image for the bundle entry
+      price: product.price,
+      discounted_price: totalBundlePrice.toFixed(2),
+      discount: product.discount,
+      category: product.category,
+      quantity: 1,
+      bundle_items: bundleProducts, // Include individual products with their own images
+      subtotal: totalBundlePrice.toFixed(2),
+    };
+  
+    userCart.items.push(bundleEntry);
+    
+  } else {
+    // Handle individual products
+    const existingItem = userCart.items.find((item) => item.id === id);
+    const discountedPrice = product.price * (1 - parseInt(product.discount || 0) / 100);
+
+    if (existingItem) {
+      // Update quantity and subtotal for the existing product
+      existingItem.quantity += 1;
+      existingItem.subtotal = (existingItem.discounted_price * existingItem.quantity).toFixed(2);
+    } else {
+      // Add the product to the cart as a new entry
+      userCart.items.push({
+        id: product.id,
+        name: product.name,
+        image: product.image,
+
+        price: product.price,
+        discounted_price: discountedPrice.toFixed(2),
+        discount: 0,
+        category: product.category,
+        quantity: 1,
+        subtotal: discountedPrice.toFixed(2),
+      });
+    }
+  }
+
+  // Update the cart summary after adding the item
+  updateCartSummary(userCart);
+
+  // Save the updated cart to localStorage
+  localStorage.setItem("cart", JSON.stringify(cart));
+
+  console.log(`${product.name} added to cart.`);
+
+
+   // Disable the button for the added bundle
+   const addButton = document.getElementById(`bundleadd-btn-${id}`);
+   if (addButton) {
+     addButton.disabled = true;
+     addButton.textContent = "Added to Cart";
+   }
+
+}
+
+
+        function updateCartSummary(userCart) {
+          let totalItems = 0;
+          let totalPriceBeforeDiscount = 0;
+          let totalDiscount = 0;
+          let totalPriceAfterDiscount = 0;
+          const deliveryFee = 15.0;
+          const taxes = 17.52;
+        
+          userCart.items.forEach((item) => {
+            const itemQuantity = item.bundle_items ? item.bundle_items.length * item.quantity : item.quantity;
+            const itemPriceBeforeDiscount = item.bundle_items
+              ? item.bundle_items.reduce((sum, p) => sum + p.price * item.quantity, 0)
+              : item.price * item.quantity;
+            const itemDiscount = item.bundle_items
+              ? item.bundle_items.reduce(
+                  (sum, p) => sum + ((p.price * (parseFloat(p.discount) || 0)) / 100) * item.quantity,
+                  0
+                )
+              : ((item.price * (parseFloat(item.discount) || 0)) / 100) * item.quantity;
+            const itemPriceAfterDiscount = parseFloat(item.subtotal);
+        
+            totalItems += itemQuantity;
+            totalPriceBeforeDiscount += itemPriceBeforeDiscount;
+            totalDiscount += itemDiscount;
+            totalPriceAfterDiscount += itemPriceAfterDiscount;
+          });
+        
+          const finalTotal = totalPriceAfterDiscount + deliveryFee + taxes;
+        
+          userCart.summary = {
+            total_items: totalItems,
+            total_price_before_discount: totalPriceBeforeDiscount.toFixed(2),
+            total_discount: totalDiscount.toFixed(2),
+            total_price_after_discount: totalPriceAfterDiscount.toFixed(2),
+            delivery_fee: deliveryFee.toFixed(2),
+            taxes: taxes.toFixed(2),
+            final_total: finalTotal.toFixed(2),
+          };
+        }
+    </script>
+  </head>
+  <body>
+    <nav>
+      <!-- Add your navbar content here -->
+    </nav>
+
+    <div class="container">
+      <div id="product-list" class="product-list">
+        <!-- Products will be dynamically inserted here -->
+      </div>
+    </div>
+  </head>
+  <body>
+    <nav>
+      <!-- Add your navbar content here -->
+    </nav>
+
+    <div id="loginModal" style="display: none;" class="modal">
+      <div class="modal-content">
+        <h2 class="h2model">Please Sign In</h2>
+        <p class="pmodel">You need to be logged in to add items to the cart.</p>
+        <button id="signInButton">Sign In</button>    <button id="cancelButton">Cancel</button>
+
+      </div>
+    </div>
+   
+    </style>    
+
+</body>
+</html>

@@ -1,0 +1,58 @@
+[
+  {
+    "id": 1,
+    "username": "Marwa Bikai",
+    "email": "marfwabikai@hotmail.com",
+    "password": "m",
+    "createdAt": "2025-01-06T14:21:00.058Z"
+  },
+  {
+    "id": 2,
+    "username": "admin",
+    "email": "maryywabikai@hotmail.com",
+    "password": "y",
+    "createdAt": "2025-01-06T14:25:50.320Z"
+  },
+  {
+    "id": 3,
+    "username": "Marwah Bikai",
+    "email": "marwhhabikai@hotmail.com",
+    "password": "h",
+    "createdAt": "2025-01-06T14:26:37.792Z"
+  },
+  {
+    "id": 4,
+    "username": "Marwa Bikaiii54",
+    "email": "marwa@gm.com",
+    "password": "mArwa2",
+    "createdAt": "2025-01-06T14:32:29.936Z"
+  },
+  {
+    "id": 5,
+    "username": "Marwa Bikai432",
+    "email": "marw.wa@g.com",
+    "password": "Marwa76",
+    "createdAt": "2025-01-06T14:33:09.136Z"
+  },
+  {
+    "id": 6,
+    "username": "Marwa Bikai",
+    "email": "mar.wa@sub.domain.io",
+    "password": "Maghet4",
+    "createdAt": "2025-01-06T14:34:35.798Z"
+  },
+  {
+    "id": 7,
+    "username": "Marwa Bikai4",
+    "email": "marwfabikai@hotmail.com",
+    "password": "ggKLdhdr7",
+    "createdAt": "2025-01-06T14:35:21.727Z"
+  },
+  {
+    "id": 8,
+    "username": "Marwa Bikai",
+    "email": "marwabikai@hotmail.com",
+    "password": "1b24930170cb31be1324a3d593127d8dc1a64e18036ec42f41341f59f1364800",
+    "createdAt": "2025-01-06T14:39:20.558Z"
+  }
+]

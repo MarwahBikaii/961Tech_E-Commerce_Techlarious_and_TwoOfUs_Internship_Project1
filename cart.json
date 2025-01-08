@@ -1,0 +1,191 @@
+[
+  {
+    "user_id": "5",
+    "items": [
+      {
+        "id": 5,
+        "name": "Apple MacBook Air M2 Chip",
+        "image": "images/laptop collection/05.png",
+        "price": 1299,
+        "discounted_price": "1299.00",
+        "discount": 0,
+        "category": "Electronics",
+        "quantity": 3,
+        "subtotal": "3897.00"
+      },
+      {
+        "id": 7,
+        "name": "Samsung Galaxy Book2 Pro 360",
+        "image": "images/laptop collection/07.png",
+        "price": 1249,
+        "discounted_price": "1249.00",
+        "discount": 0,
+        "category": "Electronics",
+        "quantity": 1,
+        "subtotal": "1249.00"
+      },
+      {
+        "id": 9,
+        "name": "HP Spectre x360 14-inch",
+        "image": "images/laptop collection/09.png",
+        "price": 1499,
+        "discounted_price": "1499.00",
+        "discount": 0,
+        "category": "Electronics",
+        "quantity": 1,
+        "subtotal": "1499.00"
+      },
+      {
+        "id": 11,
+        "name": "Apple MacBook M2 Pro Chip",
+        "image": "images/laptop collection/11.png",
+        "price": 1999,
+        "discounted_price": "1999.00",
+        "discount": 0,
+        "category": "Electronics",
+        "quantity": 1,
+        "subtotal": "1999.00"
+      },
+      {
+        "id": 13,
+        "name": "iPhone 15",
+        "image": "images/mobile collection/01.png",
+        "price": 799,
+        "discounted_price": "799.00",
+        "discount": 0,
+        "category": "Electronics",
+        "quantity": 1,
+        "subtotal": "799.00"
+      },
+      {
+        "id": 14,
+        "name": "iPhone 15 Pro",
+        "image": "images/mobile collection/03.png",
+        "price": 1099,
+        "discounted_price": "1099.00",
+        "discount": 0,
+        "category": "Electronics",
+        "quantity": 1,
+        "subtotal": "1099.00"
+      },
+      {
+        "id": 15,
+        "name": "iPhone 15 Pro Max",
+        "image": "images/mobile collection/02.png",
+        "price": 1199,
+        "discounted_price": "1199.00",
+        "discount": 0,
+        "category": "Electronics",
+        "quantity": 1,
+        "subtotal": "1199.00"
+      },
+      {
+        "id": 17,
+        "name": "Xiaomi Redmi Note 13 Pro",
+        "image": "images/mobile collection/05.png",
+        "price": 280,
+        "discounted_price": "280.00",
+        "discount": 0,
+        "category": "Electronics",
+        "quantity": 1,
+        "subtotal": "280.00"
+      },
+      {
+        "id": 16,
+        "name": "iPhone 14 Pro",
+        "image": "images/mobile collection/04.png",
+        "price": 799,
+        "discounted_price": "799.00",
+        "discount": 0,
+        "category": "Electronics",
+        "quantity": 1,
+        "subtotal": "799.00"
+      },
+      {
+        "id": 1,
+        "name": "Apple MacBook Air (M2, 2023)",
+        "image": "images/laptop collection/01.png",
+        "price": 1099,
+        "discounted_price": "1099.00",
+        "discount": 0,
+        "category": "Electronics",
+        "quantity": 2,
+        "subtotal": "2198.00"
+      },
+      {
+        "id": 28,
+        "name": "Samsung Galaxy Tab S10 Ultra",
+        "image": "images/tablet collection/s10u.jpg",
+        "price": 750,
+        "discounted_price": "750.00",
+        "discount": 0,
+        "category": "Electronics",
+        "quantity": 3,
+        "subtotal": "2250.00"
+      },
+      {
+        "id": 114,
+        "name": "Ultimate Workstation Bundle",
+        "image": "./images/workstation-bundle.jpg",
+        "price": 5000,
+        "discounted_price": "2219.20",
+        "discount": "20",
+        "category": "Bundle",
+        "quantity": 1,
+        "bundle_items": [
+          {
+            "id": 3,
+            "name": "Apple MacBook Pro 14-inch (2023)",
+            "image": "images/laptop collection/03.png",
+            "price": 1999,
+            "discounted_price": "1599.20",
+            "discount": "20",
+            "category": "Electronics",
+            "quantity": 1
+          },
+          {
+            "id": 28,
+            "name": "Samsung Galaxy Tab S10 Ultra",
+            "image": "images/tablet collection/s10u.jpg",
+            "price": 750,
+            "discounted_price": "600.00",
+            "discount": "20",
+            "category": "Electronics",
+            "quantity": 1
+          },
+          {
+            "id": 50,
+            "name": "Blue Headphones",
+            "image": "images/headphone collection/11.png",
+            "price": 25,
+            "discounted_price": "20.00",
+            "discount": "20",
+            "category": "Audio",
+            "quantity": 1
+          }
+        ],
+        "subtotal": "2219.20"
+      },
+      {
+        "id": 3,
+        "name": "Apple MacBook Pro 14-inch (2023)",
+        "image": "images/laptop collection/03.png",
+        "price": 1999,
+        "discounted_price": "1999.00",
+        "discount": 0,
+        "category": "Electronics",
+        "quantity": 5,
+        "subtotal": "9995.00"
+      }
+    ],
+    "summary": {
+      "total_items": 24,
+      "total_price_before_discount": "30037.00",
+      "total_discount": "554.80",
+      "total_price_after_discount": "29482.20",
+      "delivery_fee": "15.00",
+      "taxes": "17.52",
+      "final_total": "29514.72"
+    }
+  }
+]

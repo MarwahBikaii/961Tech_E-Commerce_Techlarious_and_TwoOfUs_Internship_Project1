@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Animated Login/Signup</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Oxygen, Ubuntu, Cantarell, sans-serif;
+      }
+
+      body {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+        padding: 20px;
+        perspective: 1000px;
+      }
+
+      .container {
+        position: relative;
+        width: 100%;
+        max-width: 800px;
+        height: 500px;
+      }
+
+      .card {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        transform-style: preserve-3d;
+        transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+
+      .card.flipped {
+        transform: rotateY(180deg);
+      }
+
+      .card-face {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        backface-visibility: hidden;
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 20px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        display: flex;
+        overflow: hidden;
+      }
+
+      .card-back {
+        transform: rotateY(180deg);
+      }
+
+      .form-side {
+        flex: 1;
+        padding: 40px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .image-side {
+        flex: 1;
+        background: linear-gradient(135deg, #4ecdc4, #2ab7ca);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        padding: 40px;
+        text-align: center;
+      }
+
+      h2 {
+        text-align: center;
+        margin-bottom: 30px;
+        color: #333;
+        font-size: 2em;
+      }
+
+      .input-group {
+        margin-bottom: 20px;
+        position: relative;
+      }
+
+      .input-group input {
+        width: 100%;
+        padding: 15px;
+        border: none;
+        background: #f5f5f5;
+        border-radius: 10px;
+        font-size: 16px;
+        outline: none;
+        transition: 0.3s;
+      }
+
+      .input-group input:focus {
+        background: #fff;
+        box-shadow: 0 0 10px rgba(78, 205, 196, 0.2);
+      }
+
+      .input-group label {
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #666;
+        pointer-events: none;
+        transition: 0.3s;
+      }
+
+      .input-group input:focus + label,
+      .input-group input:valid + label {
+        top: -10px;
+        left: 5px;
+        font-size: 12px;
+        color: #4ecdc4;
+        background: white;
+        padding: 0 5px;
+      }
+
+      button {
+        width: 100%;
+        padding: 15px;
+        background: #4ecdc4;
+        border: none;
+        border-radius: 10px;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+        transition: 0.3s;
+        margin-bottom: 15px;
+      }
+
+      button:hover {
+        background: #45b7b0;
+        transform: scale(1.02);
+      }
+
+      .toggle-form {
+        text-align: center;
+        color: #666;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+
+      .toggle-form:hover {
+        color: #4ecdc4;
+      }
+
+      .alert {
+        position: fixed;
+        top: -100px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #ff6b6b;
+        color: white;
+        padding: 15px 30px;
+        border-radius: 10px;
+        transition: 0.5s;
+        z-index: 1000;
+      }
+
+      .alert.show {
+        top: 20px;
+      }
+
+      .alert.success {
+        background: #4ecdc4;
+      }
+
+      @keyframes shake {
+        0%,
+        100% {
+          transform: translateX(-50%);
+        }
+        25% {
+          transform: translateX(calc(-50% - 10px));
+        }
+        75% {
+          transform: translateX(calc(-50% + 10px));
+        }
+      }
+
+      .alert.shake {
+        animation: shake 0.5s ease-in-out;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="card" id="card">
+        <!-- Login Side -->
+        <div class="card-face card-front">
+          <div class="form-side">
+            <h2>Sign In</h2>
+            <form id="loginForm">
+              <div class="input-group">
+                <input type="email" id="loginEmail" required />
+                <label for="loginEmail">Email</label>
+              </div>
+              <div class="input-group">
+                <input type="password" id="loginPassword" required />
+                <label for="loginPassword">Password</label>
+              </div>
+              <button type="submit">Sign In</button>
+              <div class="toggle-form" onclick="toggleCard()">
+                Don't have an account? Sign Up
+              </div>
+            </form>
+          </div>
+          <div class="image-side">
+            <div>
+              <h2>Welcome Back!</h2>
+              <p>Sign in to continue your journey with us</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Signup Side -->
+        <div class="card-face card-back">
+          <div class="image-side">
+            <div>
+              <h2>Join Us!</h2>
+              <p>Create an account to start your journey</p>
+            </div>
+          </div>
+          <div class="form-side">
+            <h2>Sign Up</h2>
+            <form id="signupForm">
+              <div class="input-group">
+                <input type="text" id="username" required />
+                <label for="username">Username</label>
+              </div>
+              <div class="input-group">
+                <input type="email" id="signupEmail" required />
+                <label for="signupEmail">Email</label>
+              </div>
+              <div class="input-group">
+                <input type="password" id="signupPassword" required />
+                <label for="signupPassword">Password</label>
+              </div>
+              <button type="submit">Sign Up</button>
+              <div class="toggle-form" onclick="toggleCard()">
+                Already have an account? Sign In
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="alert" id="alert"></div>
+
+    <script>
+      // Initialize users array
+      let users = [];
+
+      // Function to load users from JSON file and localStorage
+      document.addEventListener("DOMContentLoaded", () => {
+        loadUsers();
+      });
+
+      // Function to load users from localStorage or JSON file
+      async function loadUsers() {
+        try {
+          // Try to load from localStorage first
+          // Try to load from localStorage first
+          const savedUsers = localStorage.getItem("users");
+          if (savedUsers) {
+            users = JSON.parse(savedUsers);
+            console.log("Loaded users from localStorage:", users);
+            return;
+          }
+
+          // If localStorage is empty, try to fetch from users.json
+          const response = await fetch("users.json");
+          if (response.ok) {
+            users = await response.json();
+            // Save to localStorage for future use
+            localStorage.setItem("users", JSON.stringify(users));
+            console.log("Loaded users from users.json:", users);
+          } else {
+            console.warn("users.json not found or cannot be fetched.");
+          }
+        } catch (error) {
+          console.error("Error loading users:", error);
+        }
+      }
+
+      function saveUsers() {
+        // localStorage.setItem(users);
+        localStorage.setItem("users", JSON.stringify(users));
+
+        // Get the latest users from localStorage
+        const savedUsers = localStorage.getItem("users");
+        if (savedUsers) {
+          users = JSON.parse(savedUsers);
+        }
+
+        const jsonData = JSON.stringify(users, null, 2);
+        const blob = new Blob([jsonData], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+
+        // Show instructions to user
+        showAlert(
+          "Please save this file and replace the existing users.json",
+          "info"
+        );
+
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "users.json";
+        a.style.display = "none";
+        document.body.appendChild(a);
+
+        // Add a small delay to ensure the alert is shown
+        setTimeout(() => {
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+        }, 1000);
+
+        localStorage.setItem("users", JSON.stringify(users));
+      }
+
+      // Load users when the page loads
+      loadUsers();
+
+      function showAlert(message, type = "error") {
+        const alert = document.getElementById("alert");
+        alert.textContent = message;
+        alert.className = "alert " + (type === "success" ? "success" : "");
+        alert.classList.add("show");
+        alert.classList.add("shake");
+
+        setTimeout(() => {
+          alert.classList.remove("shake");
+        }, 500);
+
+        setTimeout(() => {
+          alert.classList.remove("show");
+        }, 3000);
+      }
+
+      function toggleCard() {
+        document.getElementById("card").classList.toggle("flipped");
+      }
+
+      // Function to validate email using regex
+      function isValidEmail(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+      }
+
+      // Function to validate password using regex
+      //At least 6 characters long.
+      //Contains at least one letter and one number.
+      function isValidPassword(password) {
+        const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/;
+        return passwordRegex.test(password);
+      }
+
+      // Function to hash password using SHA-256 (using browser's built-in crypto API)
+      async function hashPassword(password) {
+        const encoder = new TextEncoder();
+        const data = encoder.encode(password);
+        const hashBuffer = await crypto.subtle.digest("SHA-256", data); // Generate SHA-256 hash
+
+        // Convert hash buffer to hex string
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        const hashHex = hashArray
+          .map((byte) => byte.toString(16).padStart(2, "0"))
+          .join("");
+
+        return hashHex; // Return hashed password
+      }
+
+      // Function to handle signup
+      document
+        .getElementById("signupForm")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+
+          const username = document.getElementById("username").value;
+          const email = document.getElementById("signupEmail").value;
+          const password = document.getElementById("signupPassword").value;
+
+          // Hash the password before storing it
+          const hashedPassword = await hashPassword(password);
+
+          // Check if the email already exists
+          if (users.some((user) => user.email === email)) {
+            showAlert("Email already registered!");
+            return;
+          }
+
+          // Create a unique numeric ID
+          const userId = users.length > 0 ? users[users.length - 1].id + 1 : 1;
+
+          // Create new user object
+          const user = {
+            id: userId,
+            username,
+            email,
+            password: hashedPassword, // Store hashed password
+            createdAt: new Date().toISOString(),
+          };
+
+          // Add user to array and save to localStorage
+          users.push(user);
+          saveUsers();
+
+          showAlert("Account created successfully!", "success");
+          this.reset();
+          setTimeout(toggleCard, 1500);
+        });
+
+      // Function to handle login
+      document
+        .getElementById("loginForm")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+
+          const email = document.getElementById("loginEmail").value;
+          const password = document.getElementById("loginPassword").value;
+
+          // Hash the entered password to compare with the stored hashed password
+          const hashedPassword = await hashPassword(password);
+
+          // Find user with matching email and compare hashed passwords
+          const user = users.find(
+            (u) => u.email === email && u.password === hashedPassword
+          );
+
+          if (user) {
+            showAlert("Login successful!", "success");
+            localStorage.setItem("Loggedinuser", user.id); // Store user ID in localStorage to keep user logged in
+            this.reset(); // Reset the form
+            window.location.href = "products.html"; // Redirect to products.html
+          } else {
+            showAlert("Invalid email or password!");
+          }
+        });
+
+      // Floating label animation
+      document.querySelectorAll(".input-group input").forEach((input) => {
+        input.addEventListener("focus", () => {
+          input.nextElementSibling.classList.add("active");
+        });
+
+        input.addEventListener("blur", () => {
+          if (!input.value) {
+            input.nextElementSibling.classList.remove("active");
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

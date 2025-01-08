@@ -1,0 +1,66 @@
+{
+  "fullName": "marwa",
+  "address": "Hadikat At Atfal Street",
+  "phone": "06-552-584",
+  "email": "marwabikai@hotmail.com",
+  "paymentMethod": "Cash",
+  "items": [
+    {
+      "name": "Apple MacBook Pro 16-inch (2023)",
+      "price": "2499",
+      "discounted_price": "2049.18",
+      "discount": "18",
+      "category": "Electronics",
+      "quantity": "1"
+    },
+    {
+      "name": "Beats Studio Buds",
+      "price": "98.11",
+      "discounted_price": "80.45",
+      "discount": "18",
+      "category": "Audio",
+      "quantity": "1"
+    },
+    {
+      "name": "Apple Watch Ultra 2 Olive Alpine Loop",
+      "price": "950",
+      "discounted_price": "779.00",
+      "discount": "18",
+      "category": "Wearable",
+      "quantity": "1"
+    },
+    {
+      "name": "Apple MacBook Pro 13-inch (M2, 2022)",
+      "price": "1299",
+      "discounted_price": "1143.12",
+      "discount": "12",
+      "category": "Electronics",
+      "quantity": "1"
+    },
+    {
+      "name": "Apple Watch Series 9",
+      "price": "479",
+      "discounted_price": "421.52",
+      "discount": "12",
+      "category": "Wearable",
+      "quantity": "1"
+    },
+    {
+      "name": "Apple AirPods",
+      "price": "160",
+      "discounted_price": "140.80",
+      "discount": "12",
+      "category": "Audio",
+      "quantity": "1"
+    }
+  ],
+  "total": {
+    "total_items": 0,
+    "total_price_before_discount": 0,
+    "total_discount": 0,
+    "total_price_after_discount": 0,
+    "delivery_fee": 0,
+    "taxes": 0,
+    "final_total": 0
+  }
+}

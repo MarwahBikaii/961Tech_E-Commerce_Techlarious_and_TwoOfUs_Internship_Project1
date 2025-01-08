@@ -1,0 +1,547 @@
+body {
+  background-color: #ffffff;
+  font-family: "Poppins", sans-serif;
+  margin: 0;
+  padding: 0;
+}
+h1{
+  margin: 5%;
+  margin-bottom: 2%;
+  padding: 2%;
+  text-align: center;
+  font-size: 1.5rem;
+  color: #333;
+  background-color: #f8f8f8;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  font-weight: bold;
+}
+
+h1 br {
+  margin: 40px;
+}
+
+h2 span {
+  display: block;
+  margin-top: 20px;
+  font-size: 1.2rem;
+  color: #007bff;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+nav {
+  background-color: transparent; /* Add background for visibility while scrolling */
+  width: 100%;
+  top: 0;
+  z-index: 1000;
+  transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Add shadow for a floating effect */
+}
+
+#navbar {
+  width: 85%;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+  place-items: center;
+  padding: 12px;
+}
+
+#navbar-logo img {
+  width: 200px;
+  height: 100px
+}
+
+#navbar-links {
+  display: flex;
+  flex-direction: row;
+  place-items: center;
+}
+
+#navbar-links ul {
+  list-style: none;
+  display: flex;
+  flex-direction: row;
+}
+
+#navbar-links li {
+  margin-left: 60px;
+}
+
+#navbar-links a {
+  text-decoration: none;
+  color: rgb(64, 64, 64);
+  font-weight: 500;
+  -webkit-font-smoothing: antialiased;
+  font-size: 16px;
+  transition: 0.3s ease-in-out;
+}
+
+#navbar-links ul > li > a:hover {
+  color: rgb(65, 105, 255);
+}
+
+#navbar-links  ul li .dropdown{
+  display: none; 
+  position: absolute;
+  background-color: whitesmoke;
+  list-style: none;
+     
+} 
+#navbar-links  ul li:hover .dropdown {
+  display: block;
+
+}
+
+#navbar-tools {
+  display: flex;
+  flex-direction: row;
+  margin-left: 60px;
+}
+
+#navbar-tools a {
+  display: flex; 
+  place-items: center
+}
+
+
+.cart {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.cart i {
+  font-size: 28px;
+  color: white;
+}
+
+.cartAmount {
+  position: absolute;
+  top: -8px;
+  right: -10px;
+  background-color: red;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 50%;
+  font-size: 16px;
+}
+
+.shopping-cart {
+  padding: 130px;
+}
+
+.cart-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start; /* Align items to the top */
+  margin-top: 3%;
+}
+
+.cart-items {
+  width: 70%;
+  margin-right: 2%; /* Add space between items and summary */
+}
+
+.cart-summary {
+  width: 25%;
+  padding: 23px;
+  background-color: #c7d5f1;
+  color:white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: relative; /* Ensure it stays in the layout */
+}
+.cart-summary {
+  background-color: #f9f9f9; /* Light, modern background color */
+  border: 1px solid #ddd; /* Subtle border for structure */
+  border-radius: 10px; /* Rounded corners for a softer look */
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  font-family: "Poppins", sans-serif; /* Modern font */
+}
+
+.cart-summary p {
+  font-size: 18px; /* Maintain consistent readability */
+  line-height: 1.6; /* Slightly increased line height */
+  margin: 15px 0; /* Better spacing between lines */
+  color: #333; /* Neutral color for text */
+}
+
+.cart-summary strong {
+  font-size: 20px; /* Slight emphasis on bold text */
+  color: #222; /* Slightly darker color for bold text */
+}
+
+.cart-summary hr {
+  border: none;
+  border-top: 1px solid #ddd; /* Divider for better structure */
+  margin: 15px 0;
+}
+
+.cart-summary-footer {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.cart-summary-footer button {
+  background-color: #3b71dc; /* Modern blue button */
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  font-size: 18px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.cart-summary-footer button:hover {
+  background-color: #2851a3; /* Slightly darker blue on hover */
+}
+.download-button-container {
+  text-align: center; /* Center the button */
+  margin-top: 20px; /* Add spacing from the content above */
+}
+
+.download-btn {
+  width:100%;
+  background-color: #28a745; /* Green to signify a positive action */
+  color: white; /* White text for contrast */
+  border: none; /* Remove default borders */
+  padding: 12px 20px; /* Comfortable padding for a modern look */
+  font-size: 18px; /* Readable and prominent font size */
+  font-family: "Poppins", sans-serif; /* Consistent font family */
+  border-radius: 8px; /* Rounded corners for a softer design */
+  cursor: pointer; /* Indicate the button is clickable */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add depth with a subtle shadow */
+  transition: all 0.3s ease; /* Smooth hover effect */
+}
+
+.download-btn:hover {
+  background-color: #218838; /* Slightly darker green on hover */
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); /* Enhance shadow on hover */
+  transform: translateY(-2px); /* Slight lift effect */
+}
+
+.download-btn:active {
+  background-color: #1e7e34; /* Even darker green when clicked */
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2); /* Reduced shadow on active state */
+  transform: translateY(0); /* Reset lift effect */
+}
+
+
+.cart-item {
+  display: flex;
+  justify-content: ce;
+  background-color: #edf2fb;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  align-items: center;
+}
+
+.cart-item-details,
+.cart-item-quantity,
+.cart-item-subtotal {
+  flex: 1;
+}
+
+.cart-item p {
+  margin: 5px 0;
+}
+
+.cart-item button {
+  background-color: #3b71dc;
+  color: white;
+  border: none;
+  padding:12px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.cart-item button:hover {
+  background-color: #102e7b;
+}
+
+.cart-summary p {
+  font-size: 16px;
+  margin: 5px 0;
+}
+
+.cart-summary strong {
+  font-weight: 600;
+}
+
+.remove-product-btn {
+  background-color: red;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.remove-product-btn:hover {
+  background-color: darkred;
+}
+
+@media (max-width: 1000px) {
+  .cart-container {
+    flex-direction: column;
+  }
+
+  .cart-items,
+  .cart-summary {
+    width: 100%;
+  }
+}
+
+@media (max-width: 1500px) {
+  .navbar h2 {
+    font-size: 20px;
+  }
+
+  .cartAmount {
+    font-size: 14px;
+  }
+}
+
+/* Styles for smaller screens */
+@media (max-width: 1500px) {
+  .remove-bundle-btn {
+    background-color: #ff0000;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 12px;
+  }
+
+  .remove-bundle-btn-container {
+    margin-top: 10px;
+    display: block;
+    text-align: center;
+  }
+
+  .cart-item {
+    display: block;
+    margin-bottom: 20px;
+  }
+
+  .cart-item-details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 10px;
+  }
+
+  .cart-item-image {
+    width: 80%;
+ 
+    display: block;
+  }
+
+  .cart-item-quantity,
+  .cart-item-subtotal {
+    text-align: center;
+    margin-top: 10px;
+  }
+}
+
+.remove-bundle-btn-container {
+  text-align: center; /* Centers the button */
+  margin-top: 10px; /* Adds space between the items and the button */
+}
+
+
+.remove-bundle-btn {
+  background-color: #ff0000; /* Red color to indicate removal */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.remove-bundle-btn:hover {
+  background-color: #c70000; /* Darker red on hover */
+}.cart-item-image {
+  max-width: 100px;
+  height: auto;
+  margin-right: 10px;
+}
+
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 50px;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.modal-buttons {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.modal-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1em;
+}
+
+.modal-btn.confirm {
+  background-color: #4caf50;
+  color: white;
+}
+
+.modal-btn.cancel {
+  background-color: #f44336;
+  color: white;
+}
+
+
+.blue-button {
+  background-color: #3b71dc;
+  color: white;
+  font-size: 18px;
+  margin-top:0;
+  font-weight: 500;
+  -webkit-font-smoothing: antialiased;
+  transition: 0.3s ease-in-out;
+  width: 150px;height: 40px;
+}
+
+
+
+nav {
+    background-color: #edf2fb;
+    position: fixed;
+    width: 100%;
+    transition: 0.3s ease-in-out;
+}
+
+#navbar {
+    width: 85%;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    place-items: center;
+    padding: 10px;
+}
+
+#navbar-links {
+    display: flex;
+    flex-direction: row;
+    place-items: center;
+}
+#navbar-logo{
+    padding-top:1%;
+}
+#navbar-links ul {
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+}
+
+#navbar-links li {
+    margin-left: 60px;
+}
+
+#navbar-links a {
+    text-decoration: none;
+    color: rgb(64, 64, 64);
+    font-weight: 500;
+    -webkit-font-smoothing: antialiased;
+    font-size: 16px;
+    transition: 0.3s ease-in-out;
+}
+
+#navbar-links ul > li > a:hover {
+    color: rgb(65, 105, 255);
+}
+
+.blue-button {
+    background-color: #3b71dc;
+    color: white;
+    border: none;
+    font-size: 16px;
+    font-weight: 500;
+    -webkit-font-smoothing: antialiased;
+    transition: 0.3s ease-in-out
+}
+
+.blue-button:hover {
+    background-color: rgb(102, 136, 240);
+}
+
+#navbar-links .blue-button {
+    margin-left: 20px;
+    padding: 9px 28px;
+    border-radius: 5px
+}
+
+.empty-message {
+  text-align: center;
+  margin-top: 50px;
+}
+
+.empty-message h2 {
+  color: #555;
+  font-size: 1.5em;
+}
+
+.empty-message .blue-button {
+  display: inline-block;
+  margin-top: 20px;
+ 
+  padding: 0.5%;
+  padding-top: 1.4%;
+  background-color: #007bff;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.empty-message .blue-button:hover {
+  background-color: #0056b3;
+}
+#clearCartBtn {
+  background-color: red;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  margin-top: 20px;
+  font-size: 16px;width: 100%;
+}
+
+#clearCartBtn:hover {
+  background-color: darkred;
+}
