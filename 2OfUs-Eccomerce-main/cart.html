@@ -91,13 +91,13 @@
               clearCartBtn.disabled = false;
               clearCartBtn.addEventListener("click", () => {
                 // Filter out the logged-in user's cart
-                /** const updatedCarts = carts.filter(
-                  (userCart) => userCart.user_id !== loggedInUser
-                );
-                localStorage.setItem("cart", JSON.stringify(updatedCarts));
+                /**   const updatedCarts = carts.filter(
+                        (userCart) => userCart.user_id !== loggedInUser
+                      );
+                      localStorage.setItem("cart", JSON.stringify(updatedCarts));
 
-                // Show a confirmation message
-                alert("Your cart has been cleared.");**/
+                      // Show a confirmation message
+                      alert("Your cart has been cleared.");**/
 
                 location.reload(); // Reload the page to reflect changes
               });
@@ -119,11 +119,11 @@
         // Check if the user is not logged in
         if (!loggedinUser) {
           shoppingCart.innerHTML = `
-                <div class="empty-message">
-                  <h1>Your Not Logged In ! Please sign in to start shopping and add items to your cart!</h1>
-                  <a href="./SignIn.html" class="blue-button">Sign In Now</a>
-                </div>
-              `;
+                      <div class="empty-message">
+                        <h1>Your Not Logged In ! Please sign in to start shopping and add items to your cart!</h1>
+                        <a href="./SignIn.html" class="blue-button">Sign In Now</a>
+                      </div>
+                    `;
           return; // Exit early since no further rendering is needed
         }
 
@@ -179,32 +179,34 @@
         }
 
         shoppingCart.innerHTML = `
-        <div class="cart-container">
-          <div class="cart-items">${renderCartItems(userCart.items)}</div>
-          <div class="cart-summary">
-            <p><strong>Total Items:</strong> ${userCart.summary.total_items}</p>
-            <p><strong>Total Price (Before Discount):</strong> $${
-              userCart.summary.total_price_before_discount
-            }</p>
-            <p><strong>Total Discount:</strong> $${
-              userCart.summary.total_discount
-            }</p>
-            <p><strong>Total Price (After Discount):</strong> $${
-              userCart.summary.total_price_after_discount
-            }</p>
-            <p><strong>Delivery Fee:</strong> $${
-              userCart.summary.delivery_fee
-            }</p>
-            <p><strong>Taxes:</strong> $${userCart.summary.taxes}</p>
-            <p><strong>Final Total:</strong> $${
-              userCart.summary.final_total
-            }</p>
-            <div class="download-button-container">
-<button id="downloadBtn" class="download-btn">Checkout</button>
-            </div>
-          </div>
-        </div>
-      `;
+              <div class="cart-container">
+                <div class="cart-items">${renderCartItems(userCart.items)}</div>
+                <div class="cart-summary">
+                  <p><strong>Total Items:</strong> ${
+                    userCart.summary.total_items
+                  }</p>
+                  <p><strong>Total Price (Before Discount):</strong> $${
+                    userCart.summary.total_price_before_discount
+                  }</p>
+                  <p><strong>Total Discount:</strong> $${
+                    userCart.summary.total_discount
+                  }</p>
+                  <p><strong>Total Price (After Discount):</strong> $${
+                    userCart.summary.total_price_after_discount
+                  }</p>
+                  <p><strong>Delivery Fee:</strong> $${
+                    userCart.summary.delivery_fee
+                  }</p>
+                  <p><strong>Taxes:</strong> $${userCart.summary.taxes}</p>
+                  <p><strong>Final Total:</strong> $${
+                    userCart.summary.final_total
+                  }</p>
+                  <div class="download-button-container">
+      <button id="downloadBtn" class="download-btn">Checkout</button>
+                  </div>
+                </div>
+              </div>
+            `;
       };
       //   // Re-add event listener for the "Clear Cart" button after re-rendering
       //   const clearCartBtn = document.getElementById("clearCartBtn");
@@ -252,55 +254,57 @@
         for (let group in bundles) {
           console.log(group);
           htmlContent += `<div class="cart-group">
-                  <h2>${group.includes("Bundle") ? `🛒 ${group}` : ""}</h2>`;
+                        <h2>${
+                          group.includes("Bundle") ? `🛒 ${group}` : ""
+                        }</h2>`;
 
           // If it's a bundle, remove the quantity buttons and add a delete bundle button
           if (group.includes("Bundle")) {
             htmlContent += `
-                    <div class="bundle-details">
-                      ${bundles[group]
-                        .map(
-                          (item) => `
-                            <div class="cart-item">
-                              <div class="cart-item-details">
-                        <img src="${item.image}" alt="${item.name}" class="cart-item-image" />
+                          <div class="bundle-details">
+                            ${bundles[group]
+                              .map(
+                                (item) => `
+                                  <div class="cart-item">
+                                    <div class="cart-item-details">
+                              <img src="${item.image}" alt="${item.name}" class="cart-item-image" />
 
-                                <p><strong>${item.name}</strong></p>
-                                <p>Price: $${item.price} | Discounted Price: $${item.discounted_price}</p>
-                                <p>Discount: $${item.discount}</p>
-                              </div>
-                            </div>`
-                        )
-                        .join("")}
-                    </div>
-              <button onclick="removeBundle('${group}')" class="remove-bundle-btn">Remove Bundle</button>`;
+                                      <p><strong>${item.name}</strong></p>
+                                      <p>Price: $${item.price} | Discounted Price: $${item.discounted_price}</p>
+                                      <p>Discount: $${item.discount}</p>
+                                    </div>
+                                  </div>`
+                              )
+                              .join("")}
+                          </div>
+                    <button onclick="removeBundle('${group}')" class="remove-bundle-btn">Remove Bundle</button>`;
           } else {
             // For individual products, render normally with quantity controls and remove button
             htmlContent += bundles[group]
               .map(
                 (item) => `
-                      <div class="cart-item">
-                        <div class="cart-item-details">
-                        <img src="${item.image}" alt="${item.name}" class="cart-item-image" />
+                            <div class="cart-item">
+                              <div class="cart-item-details">
+                              <img src="${item.image}" alt="${item.name}" class="cart-item-image" />
 
 
-                          <p><strong>${item.name}</strong></p>
-                          <p>Price: $${item.price} | Discounted Price: $${item.discounted_price}</p>
-                          <p>Discount: $${item.discount}</p>
-                        </div>
-                        <div class="cart-item-quantity">
-                          <p>Quantity:
-                            <button onclick="updateQuantity(${item.id}, -1)" class="quantity-btn">-</button>
-                            ${item.quantity}
-                            <button onclick="updateQuantity(${item.id}, 1)" class="quantity-btn">+</button>
-                          </p>
-                        </div>
-                        <div class="cart-item-subtotal">
-                          <p>Subtotal: $${item.subtotal}</p>
-                        </div>
-                        <div class="remove-bundle-btn-container">
-                        <button onclick="removeProduct(${item.id})" class="remove-product-btn">Remove Product</button>
-                    </div>  </div>`
+                                <p><strong>${item.name}</strong></p>
+                                <p>Price: $${item.price} | Discounted Price: $${item.discounted_price}</p>
+                                <p>Discount: $${item.discount}</p>
+                              </div>
+                              <div class="cart-item-quantity">
+                                <p>Quantity:
+                                  <button onclick="updateQuantity(${item.id}, -1)" class="quantity-btn">-</button>
+                                  ${item.quantity}
+                                  <button onclick="updateQuantity(${item.id}, 1)" class="quantity-btn">+</button>
+                                </p>
+                              </div>
+                              <div class="cart-item-subtotal">
+                                <p>Subtotal: $${item.subtotal}</p>
+                              </div>
+                              <div class="remove-bundle-btn-container">
+                              <button onclick="removeProduct(${item.id})" class="remove-product-btn">Remove Product</button>
+                          </div>  </div>`
               )
               .join("");
           }
