@@ -90,14 +90,17 @@
               // Enable the Clear Cart button and set up its click event
               clearCartBtn.disabled = false;
               clearCartBtn.addEventListener("click", () => {
+
+                
                 // Filter out the logged-in user's cart
-                const updatedCarts = carts.filter(
+                //this should hapen when the order is checkout ,with the personal information (checkout.html)
+                /**const updatedCarts = carts.filter(
                   (userCart) => userCart.user_id !== loggedInUser
                 );
                 localStorage.setItem("cart", JSON.stringify(updatedCarts));
 
                 // Show a confirmation message
-                alert("Your cart has been cleared.");
+                alert("Your cart has been cleared.");**/
 
                 location.reload(); // Reload the page to reflect changes
               });
