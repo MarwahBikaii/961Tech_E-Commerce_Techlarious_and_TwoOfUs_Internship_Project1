@@ -11,7 +11,6 @@
       let productsData = []; // To store fetched product data
       let cart = JSON.parse(localStorage.getItem('cart')) || [];
       
-      localStorage.setItem("Loggedinuser",5);
       document.addEventListener("DOMContentLoaded", () => {
         // NAVIGATION SCROLLING EFFECT
 
@@ -206,7 +205,7 @@
               <a href="index.html"> Home </a>
             </li>
             <li>
-              <a href="productsPage.html"> Products </a>
+              <a href="products.html"> Products </a>
               <ul class=" dropdown">
                 <li><a href="electronics.html">Electronics</a></li>
                 <li><a href="audio.html">Audio</a></li>
@@ -215,7 +214,9 @@
 
             </ul>
             </li>
-            
+            <li>
+              <a href="cart.html">Cart </a>
+            </li>
             <li>
               <a href="index.html"> About </a>
             </li>
@@ -231,31 +232,48 @@
         
       </div>
     </nav>        
-    <div id="product-top-container">
-      <div id="product-top-wrapper">
-        <div id="product-top-text-section">
-          <h2>Welcome to 961Tech</h2>
 
-          <h1>
-            <span class="blue-line"></span>Discover Our Exclusive Bundle
-            Offerings
-          </h1>
 
-          <p>
-            Explore our limited edition bundles and special offers. Browse
-            through our handpicked selection of premium products, and grab
-            them before they're gone.
-          </p>
-        
+
+    <div class="sidebar">
+      <h2>Filters</h2>
+      <form id="filterForm">
+        <!-- Price Range Filter -->
+        <div class="filter-section">
+          <h4>Price Range</h4>
+          <input type="number" id="minPrice" placeholder="Min Price" />
+          <input type="number" id="maxPrice" placeholder="Max Price" />
         </div>
-        <div id="product-top-image-section">
-          <img
-            src="Images/961tech Images/homepage/watch.png"
-            alt="Exclusive Product"
-          />
-        </div>
-      </div>
+  
+<!-- Category Filter -->
+<div class="filter-section">
+    <h4>Category</h4>
+    <div>
+      <input type="checkbox" id="electronics" name="category" value="Electronics" />
+      <label for="electronics">Electronics</label>
     </div>
+    <div>
+      <input type="checkbox" id="audio" name="category" value="Audio" />
+      <label for="audio">Audio</label>
+    </div>
+    <div>
+      <input type="checkbox" id="accessories" name="category" value="accessories" />
+      <label for="accessories">Accessories</label>
+    </div>
+    <div>
+      <input type="checkbox" id="wearables" name="category" value="Wearable" />
+      <label for="wearables">Wearables</label>
+    </div>
+  </div>
+  
+  
+        <button type="button" id="applyFilters">Apply Filters</button>
+      </form>
+    </div>
+
+
+    <div id="productContainer"></div>
+
     <div id="productModal" class="modal">
       <div class="modal-content" id="modal">
         <span class="close-btn">&times;</span>
@@ -281,10 +299,12 @@
       
         if (storedProducts) {
           const products = JSON.parse(storedProducts);
-          const electronicsProducts = products.filter(
-            (product) => product.category.toLowerCase() === "wearable"
-          );
-          displayProducts(electronicsProducts);
+          const displayedProducts = products.filter(
+  (product) => product.category.toLowerCase() !== "bundle"
+);
+
+// Display only filtered electronics products
+displayProducts(displayedProducts);
       
           // Attach event listeners for rating inputs
           attachRatingListeners(products);
@@ -292,14 +312,22 @@
           fetch("products.json")
             .then((response) => response.json())
             .then((products) => {
+              productsData=products;
               localStorage.setItem("products", JSON.stringify(products));
-              const electronicsProducts = products.filter(
-                (product) => product.category.toLowerCase() === "wearable"
-              );
+           
+           
               displayProducts(electronicsProducts);
       
               // Attach event listeners for rating inputs
               attachRatingListeners(products);
+              
+
+             // Adding the filter event listener
+             document.getElementById("applyFilters").addEventListener("click", function (event) {
+             filterProducts(event, products); // Pass the actual data when applying filters
+    });
+
+              
             })
             .catch((error) => console.log("Error fetching products:", error));
         }
@@ -360,7 +388,7 @@
                 )
                 .join("")}
             </div>
-          
+            
           `;
       
           // Adding a click event to open the modal when product is clicked
@@ -384,8 +412,6 @@
           productContainer.appendChild(productDiv);
         });
       }
-
-      
 function openProductModal(product) {
   const modal = document.getElementById("productModal");
   
@@ -423,6 +449,12 @@ function openProductModal(product) {
       // Filter products to only include those with quantity > 0
       productsData = data.filter((product) => product.quantity > 0);   
       generateShop(product,productsData);
+
+   // Adding the filter event listener
+   document.getElementById("applyFilters").addEventListener("click", function (event) {
+             filterProducts(event, productsData); // Pass the actual data when applying filters
+      
+    })
     })
     .catch((error) => console.error("Error fetching products.json:", error));
 
@@ -438,9 +470,7 @@ if (!shop) {
     console.error("Shop container not found!");
     return;
 }
-
-    console.log(product.id);
-  console.log(product);
+console.log(productsData);
 
     let selectedProductId = product.id; 
     let relatedBundles = [];
@@ -617,17 +647,17 @@ function showLoginModal() {
 function addToCart(id) {
   const LoggedInUser = localStorage.getItem("Loggedinuser");
  
-  if (!localStorage.getItem("Loggedinuser")){
-    alert("You need to be logged in before adding to your cart!")
-    ;
-    return
-  }
-
   // Find the product by its ID
   const product = productsData.find((p) => p.id === id);
   if (!product) {
     console.error("Product not found!");
     return;
+  }
+ 
+  if (!localStorage.getItem("Loggedinuser")){
+    alert("You need to be logged in before adding to your cart!")
+    ;
+    return
   }
 
   // Retrieve the existing cart from localStorage
@@ -736,7 +766,6 @@ function addToCart(id) {
 
 }
 
-
         function updateCartSummary(userCart) {
           let totalItems = 0;
           let totalPriceBeforeDiscount = 0;
@@ -776,6 +805,45 @@ function addToCart(id) {
             final_total: finalTotal.toFixed(2),
           };
         }
+
+
+
+
+ 
+
+
+    function filterProducts(e, productsData) {
+
+      if (typeof productsData === 'undefined' || productsData === null) {
+    const storedProducts = localStorage.getItem("products");
+    productsData = storedProducts ? JSON.parse(storedProducts) : [];
+  }  console.log("Filtering products with the following data:");
+  console.log("productsData:", productsData); // Logs the data being passed
+
+  const minPrice = parseFloat(document.getElementById("minPrice").value) || 0;
+  const maxPrice = parseFloat(document.getElementById("maxPrice").value) || Infinity;
+  const selectedCategories = Array.from(
+    document.querySelectorAll('input[name="category"]:checked')
+  ).map((checkbox) => checkbox.value);
+
+  // Filter the products based on price and category
+  const filteredProducts = productsData.filter((product) => {
+    const isPriceInRange =
+      product.price >= minPrice && product.price <= maxPrice;
+    const isCategoryMatched = selectedCategories.length
+      ? selectedCategories.includes(product.category)
+      : true;
+    return isPriceInRange && isCategoryMatched;
+  });
+
+
+  console.log("Selected Categories:", selectedCategories);
+  displayProducts(filteredProducts);
+}
+  
+    document
+      .getElementById("applyFilters")
+      .addEventListener("click", filterProducts);
     </script>
   </head>
   <body>
@@ -803,7 +871,5 @@ function addToCart(id) {
       </div>
     </div>
    
-    </style>    
-
 </body>
 </html>

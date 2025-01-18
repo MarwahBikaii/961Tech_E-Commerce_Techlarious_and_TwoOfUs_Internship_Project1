@@ -26,7 +26,7 @@
             </li>
 
             <li>
-              <a href="products.html">Products</a>
+              <a href="productsPage.html">Products</a>
             </li>
           </ul>
           <button class="blue-button">Sign Out</button>
@@ -200,7 +200,7 @@
               userCart.summary.final_total
             }</p>
             <div class="download-button-container">
-              <button id="downloadBtn" class="download-btn">Checkout</button>
+<button id="downloadBtn" class="download-btn">Checkout</button>
             </div>
           </div>
         </div>
@@ -379,18 +379,6 @@
         );
       };
 
-      // Function to download the cart as a JSON file
-      // document
-      //   .getElementById("downloadBtn")
-      //   .addEventListener("click", function () {
-      //     const blob = new Blob([JSON.stringify(cart, null, 2)], {
-      //       type: "application/json",
-      //     });
-      //     const link = document.createElement("a");
-      //     link.href = URL.createObjectURL(blob);
-      //     link.download = "cart.json";
-      //     link.click();
-      //   });
       // Setup checkout functionality
       function setupCheckoutButton() {
         const downloadBtn = document.getElementById("downloadBtn");
@@ -421,11 +409,6 @@
               });
             });
 
-            // Clear the logged-in user's cart after checkout
-            cart = cart.filter((userCart) => userCart.user_id !== loggedinUser);
-            localStorage.setItem("cart", JSON.stringify(cart));
-            alert("Checkout successful! Your cart has been cleared.");
-
             // Reload the page to reflect the updated cart state
             location.reload();
 
@@ -438,6 +421,10 @@
             cartLink.download = "cart.json"; // Cart file download
             cartLink.click();
 
+            // Clear the logged-in user's cart after checkout
+            cart = cart.filter((userCart) => userCart.user_id !== loggedinUser);
+            localStorage.setItem("cart", JSON.stringify(cart));
+            alert("Checkout successful! Your cart has been cleared.");
             downloadUpdatedProducts();
             window.location.href = "Checkout.html";
           });

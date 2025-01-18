@@ -205,7 +205,7 @@
               <a href="index.html"> Home </a>
             </li>
             <li>
-              <a href="products.html"> Products </a>
+              <a href="productsPage.html"> Products </a>
               <ul class=" dropdown">
                 <li><a href="electronics.html">Electronics</a></li>
                 <li><a href="audio.html">Audio</a></li>
@@ -257,6 +257,13 @@
         </div>
       </div>
     </div>
+
+
+
+    
+
+    <div id="productContainer"></div>
+
     <div id="productModal" class="modal">
       <div class="modal-content" id="modal">
         <span class="close-btn">&times;</span>
@@ -293,7 +300,9 @@
           fetch("products.json")
             .then((response) => response.json())
             .then((products) => {
+              productsData=products;
               localStorage.setItem("products", JSON.stringify(products));
+           
               const electronicsProducts = products.filter(
                 (product) => product.category.toLowerCase() === "electronics"
               );
@@ -301,6 +310,14 @@
       
               // Attach event listeners for rating inputs
               attachRatingListeners(products);
+              
+
+             // Adding the filter event listener
+             document.getElementById("applyFilters").addEventListener("click", function (event) {
+             filterProducts(event, products); // Pass the actual data when applying filters
+    });
+
+              
             })
             .catch((error) => console.log("Error fetching products:", error));
         }
@@ -422,6 +439,10 @@ function openProductModal(product) {
       // Filter products to only include those with quantity > 0
       productsData = data.filter((product) => product.quantity > 0);   
       generateShop(product,productsData);
+
+  
+      
+
     })
     .catch((error) => console.error("Error fetching products.json:", error));
 
@@ -437,9 +458,7 @@ if (!shop) {
     console.error("Shop container not found!");
     return;
 }
-
-    console.log(product.id);
-  console.log(product);
+console.log(productsData);
 
     let selectedProductId = product.id; 
     let relatedBundles = [];
@@ -774,6 +793,13 @@ function addToCart(id) {
             final_total: finalTotal.toFixed(2),
           };
         }
+
+
+
+
+ 
+
+
     </script>
   </head>
   <body>

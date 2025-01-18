@@ -1,0 +1,189 @@
+<body>
+  <div class="sidebar">
+    <h3>Filters</h3>
+    <form id="filterForm">
+      <!-- Price Range Filter -->
+      <div class="filter-section">
+        <h4>Price Range</h4>
+        <input type="number" id="minPrice" placeholder="Min Price" />
+        <input type="number" id="maxPrice" placeholder="Max Price" />
+      </div>
+
+      <!-- Category Filter -->
+      <div class="filter-section">
+        <h4>Category</h4>
+        <div>
+          <input
+            type="checkbox"
+            id="electronics"
+            name="category"
+            value="Electronics"
+          />
+          <label for="electronics">Electronics</label>
+        </div>
+        <div>
+          <input type="checkbox" id="audio" name="category" value="Audio" />
+          <label for="audio">Audio</label>
+        </div>
+        <div>
+          <input
+            type="checkbox"
+            id="accessories"
+            name="category"
+            value="Accessories"
+          />
+          <label for="accessories">Accessories</label>
+        </div>
+        <div>
+          <input
+            type="checkbox"
+            id="wearables"
+            name="category"
+            value="Wearables"
+          />
+          <label for="wearables">Wearables</label>
+        </div>
+      </div>
+
+      <button type="button" id="applyFilters">Apply Filters</button>
+    </form>
+  </div>
+
+  <!-- Product Container -->
+  <div id="productContainer"></div>
+
+  <style>
+    .sidebar {
+      width: 250px;
+      padding: 15px;
+      background-color: #f9f9f9;
+      border-right: 1px solid #ddd;
+    }
+
+    .filter-section {
+      margin-bottom: 20px;
+    }
+
+    .filter-section h4 {
+      margin-bottom: 10px;
+    }
+
+    .filter-section input[type="number"] {
+      width: 100%;
+      margin-bottom: 10px;
+      padding: 5px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+
+    .filter-section input[type="checkbox"] {
+      margin-right: 5px;
+    }
+
+    button#applyFilters {
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    button#applyFilters:hover {
+      background-color: #0056b3;
+    }
+
+    .product {
+      border: 1px solid #ddd;
+      padding: 10px;
+      margin: 10px 0;
+      text-align: center;
+    }
+
+    .product img {
+      max-width: 100%;
+      height: auto;
+    }
+  </style>
+  <script>
+    const products = [
+      {
+        id: 1,
+        name: "Apple MacBook Air (M2, 2023)",
+        price: 1099,
+        category: "Electronics",
+        image: "images/laptop collection/01.png",
+        quantity: 100,
+        description:
+          "The MacBook Air (M2) features Apple's powerful M2 chip...",
+        rating: 4.5,
+        is_bundle: false,
+      },
+      {
+        id: 2,
+        name: "Mechanical Keyboard",
+        price: 49.99,
+        category: "Electronics",
+        image: "./images/wireless-mouse.jpg",
+        quantity: 30,
+        description: "Durable mechanical keyboard with RGB lighting.",
+        rating: 4.4,
+        is_bundle: false,
+      },
+      {
+        id: 3,
+        name: "Noise-Canceling Headphones",
+        price: 89.99,
+        category: "Audio",
+        image:
+          "../../../Images/961tech Images/product page/headphone collection/04.png",
+        quantity: 20,
+        description: "Premium headphones with active noise cancellation.",
+        rating: 4.9,
+        is_bundle: false,
+      },
+    ];
+
+    function filterProducts() {
+      console.log("filtering");
+      const minPrice =
+        parseFloat(document.getElementById("minPrice").value) || 0;
+      const maxPrice =
+        parseFloat(document.getElementById("maxPrice").value) || Infinity;
+      const selectedCategories = Array.from(
+        document.querySelectorAll('input[name="category"]:checked')
+      ).map((checkbox) => checkbox.value);
+
+      const filteredProducts = products.filter((product) => {
+        const isPriceInRange =
+          product.price >= minPrice && product.price <= maxPrice;
+        const isCategoryMatched = selectedCategories.length
+          ? selectedCategories.includes(product.category)
+          : true;
+        return isPriceInRange && isCategoryMatched;
+      });
+
+      displayProducts(filteredProducts);
+    }
+
+    function displayProducts(products) {
+      const productContainer = document.getElementById("productContainer");
+      productContainer.innerHTML = products
+        .map(
+          (product) => `
+      <div class="product">
+        <img src="${product.image}" alt="${product.name}">
+        <h3>${product.name}</h3>
+        <p>Price: $${product.price}</p>
+        <p>Category: ${product.category}</p>
+      </div>
+    `
+        )
+        .join("");
+    }
+
+    document
+      .getElementById("applyFilters")
+      .addEventListener("click", filterProducts);
+  </script>
+</body>
