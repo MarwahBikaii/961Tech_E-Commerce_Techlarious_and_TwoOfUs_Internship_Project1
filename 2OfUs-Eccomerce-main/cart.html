@@ -91,13 +91,13 @@
               clearCartBtn.disabled = false;
               clearCartBtn.addEventListener("click", () => {
                 // Filter out the logged-in user's cart
-                const updatedCarts = carts.filter(
+                /** const updatedCarts = carts.filter(
                   (userCart) => userCart.user_id !== loggedInUser
                 );
                 localStorage.setItem("cart", JSON.stringify(updatedCarts));
 
                 // Show a confirmation message
-                alert("Your cart has been cleared.");
+                alert("Your cart has been cleared.");**/
 
                 location.reload(); // Reload the page to reflect changes
               });
@@ -421,10 +421,10 @@
             cartLink.download = "cart.json"; // Cart file download
             cartLink.click();
 
-            // Clear the logged-in user's cart after checkout
-            cart = cart.filter((userCart) => userCart.user_id !== loggedinUser);
-            localStorage.setItem("cart", JSON.stringify(cart));
-            alert("Checkout successful! Your cart has been cleared.");
+            // // Clear the logged-in user's cart after checkout
+            // cart = cart.filter((userCart) => userCart.user_id !== loggedinUser);
+            // localStorage.setItem("cart", JSON.stringify(cart));
+            // alert("Checkout successful! Your cart has been cleared.");
             downloadUpdatedProducts();
             window.location.href = "Checkout.html";
           });
